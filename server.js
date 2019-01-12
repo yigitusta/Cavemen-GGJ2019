@@ -2,8 +2,6 @@ var express = require('express')
 var app = express();
 const path = require('path');
 
-app.use(express.static('client'))
-
 app.get('/', function (req, res) {
   res.send('Hello World3')
 })
