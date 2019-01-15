@@ -4,11 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .game-container {
+      min-width: 100vw;
+      min-height: 100vh;
+      background-image: linear-gradient(to bottom right, #9CFFFA, #81F495);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .game-container > canvas {
+      border-radius: 10px;
+      overflow: hidden;
+      -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+    }
+  </style>
+  <title>Rage Of Empires</title>
 </head>
 <body>
-  hello madafack
-
-  <img src="./resim.png" alt="">
+  <div id="game-container" class="game-container"></div>
+  <script src="./src/index.js"></script>
 </body>
 </html>

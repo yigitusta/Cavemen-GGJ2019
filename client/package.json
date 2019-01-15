@@ -1,0 +1,18 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html --open"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "phaser": "^3.15.1",
+    "scene1": "^1.0.1"
+  },
+  "devDependencies": {
+    "parcel": "^1.11.0"
+  }
+}
