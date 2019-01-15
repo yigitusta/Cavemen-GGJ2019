@@ -2,7 +2,7 @@ var express = require('express')
 var app = express();
 const path = require('path');
 
-app.use('/', express.static('client'))
+app.use('/', express.static('client/dist'))
 
 app.get('/api', (req, res) => {
   res.send('HEllo World');
