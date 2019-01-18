@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
