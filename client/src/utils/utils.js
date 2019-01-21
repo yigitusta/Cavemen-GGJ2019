@@ -8,8 +8,8 @@ export function handleWindowResize() {
   }, false);
 
   const container = document.querySelector('.game-container');
-  container.addEventListener('click', makeFullScreen, false);
-  document.addEventListener('keydown', makeFullScreen, false);
+  // container.addEventListener('click', makeFullScreen, false);
+  // document.addEventListener('keydown', makeFullScreen, false);
 
   function makeFullScreen(e) {
     if (e.keyCode === 122) return;
