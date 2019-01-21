@@ -11,7 +11,8 @@ export function handleWindowResize() {
   container.addEventListener('click', makeFullScreen, false);
   document.addEventListener('keydown', makeFullScreen, false);
 
-  function makeFullScreen() {
+  function makeFullScreen(e) {
+    if (e.keyCode === 122) return;
     if (document.webkitFullscreenElement === null ||
         document.mozFullscreenElement === null ||
         document.msFullscreenElement === null ||

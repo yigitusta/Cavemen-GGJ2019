@@ -1,6 +1,7 @@
-import constants from './constants/constants';
 import Phaser from 'phaser';
-import MainScene from './scenes/main';
+import LoginScene from './scenes/LoginScene';
+import MainScene from './scenes/MainScene';
+
 import { handleWindowResize } from './utils/utils';
 
 const config = {
@@ -15,10 +16,14 @@ const config = {
       gravity: { y: 0 }
     }
   },
-  scene: [MainScene]
+  scene: [
+    LoginScene,
+    MainScene
+  ]
 };
 
-window.game = new Phaser.Game(config);
+const game = new Phaser.Game(config);
+window.game = game;
 
 handleWindowResize();
 
