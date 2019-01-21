@@ -18,11 +18,22 @@
       justify-content: center;
       align-items: center;
     }
+    .login {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      left: 50%;
+      top: 50%;
+    }
   </style>
   <title>CaveMen</title>
 </head>
 <body>
   <div id="game-container" class="game-container"></div>
+  <form class="login">
+    <label for="username">Username: </label>
+    <input type="text" name="username" id="username" class="username">
+    <input type="submit" class="submit">
+  </form>
   <script src="./src/index.js"></script>
 </body>
 </html>

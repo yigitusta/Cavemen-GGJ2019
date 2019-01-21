@@ -1,14 +1,11 @@
 import Phaser from 'phaser';
-import LoginScene from './scenes/LoginScene';
 import MainScene from './scenes/MainScene';
-
 import { handleWindowResize } from './utils/utils';
 
 const config = {
   type: Phaser.AUTO,
   width: window.innerWidth,
   height: window.innerHeight,
-  backgroundColor: "#222222",
   parent: "game-container",
   physics: {
     default: "arcade",
@@ -17,13 +14,18 @@ const config = {
     }
   },
   scene: [
-    LoginScene,
     MainScene
   ]
 };
 
-const game = new Phaser.Game(config);
-window.game = game;
+const login = document.querySelector(".login");
+login.addEventListener("submit", function(e){
+  e.preventDefault();
+  const username = e.target.querySelector(".username").value;
+  e.target.style.display = "none";
+  config.username = username;
+  window.game = new Phaser.Game(config);
+});
 
 handleWindowResize();
 

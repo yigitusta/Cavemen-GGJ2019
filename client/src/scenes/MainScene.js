@@ -67,8 +67,6 @@ export default class MainScene extends Phaser.Scene {
       })
       .setScrollFactor(0)
       .setDepth(30);
-
-    console.log(x);
   }
   createPlayer() {
     // Object layers in Tiled let you embed extra info into a map - like a spawn point or custom
