@@ -23,31 +23,57 @@ export default class MainScene extends Phaser.Scene {
     this.load.atlas("atlas", atlasImg, atlasJson);
   }
   create() {
-    console.log(this.cameras);
-    const map = this.make.tilemap({ key: "map" });
+    this.createMap();
+    this.createPlayer();
+    this.createCamera();
+    this.createUI();
+    this.debugGraphics();
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.events.on('resize', handleGameResize, this);
+  }
+  update(time, delta) {
+    this.updatePlayer();
+  }
+
+  // custom methods
+  createMap() {
+    this.map = this.make.tilemap({ key: "map" });
 
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
-    const tileset = map.addTilesetImage("tuxmon-sample-32px-extruded", "tiles");
+    const tileset = this.map.addTilesetImage("tuxmon-sample-32px-extruded", "tiles");
 
     // Parameters: layer name (or index) from Tiled, tileset, x, y
+    const below = this.map.createStaticLayer("Below Player", tileset, 0, 0);
+    const world = this.map.createStaticLayer("World", tileset, 0, 0);
+    const above = this.map.createStaticLayer("Above Player", tileset, 0, 0);
 
-    const layers = {
-      below: map.createStaticLayer("Below Player", tileset, 0, 0),
-      world: map.createStaticLayer("World", tileset, 0, 0),
-      above: map.createStaticLayer("Above Player", tileset, 0, 0)
-    };
-
-    layers.world.setCollisionByProperty({ collides: true });
+    world.setCollisionByProperty({ collides: true });
 
     // By default, everything gets depth sorted on the screen in the order we created things. Here, we
     // want the "Above Player" layer to sit on top of the player, so we explicitly give it a depth.
     // Higher depths will sit on top of lower depth objects.
-    layers.above.setDepth(10);
+    above.setDepth(10);
+    this.world = world;
+  }
+  createUI() {
+    // Help text that has a "fixed" position on the screen
+    const x = this.add
+      .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
+        font: "18px monospace",
+        fill: "#000000",
+        padding: { x: 20, y: 10 },
+        backgroundColor: "#ffffff"
+      })
+      .setScrollFactor(0)
+      .setDepth(30);
 
+    console.log(x);
+  }
+  createPlayer() {
     // Object layers in Tiled let you embed extra info into a map - like a spawn point or custom
     // collision shapes. In the tmx file, there's an object layer with a point named "Spawn Point"
-    const spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
+    const spawnPoint = this.map.findObject("Objects", obj => obj.name === "Spawn Point");
 
     // Create a sprite with physics enabled via the physics system. The image used for the sprite has
     // a bit of whitespace, so I'm using setSize & setOffset to control the size of the player's body.
@@ -57,7 +83,7 @@ export default class MainScene extends Phaser.Scene {
       .setOffset(0, 24);
 
     // Watch the player and worldLayer for collisions, for the duration of the scene:
-    this.physics.add.collider(this.player, layers.world);
+    this.physics.add.collider(this.player, this.world);
 
     // Create the player's walking animations from the texture atlas. These are stored in the global
     // animation manager so any sprite can access them.
@@ -86,23 +112,14 @@ export default class MainScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
     });
-
+  }
+  createCamera() {
     const camera = this.cameras.main;
     camera.startFollow(this.player);
-    camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-
-    this.cursors = this.input.keyboard.createCursorKeys();
-    // Help text that has a "fixed" position on the screen
-    this.add
-      .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
-        font: "18px monospace",
-        fill: "#000000",
-        padding: { x: 20, y: 10 },
-        backgroundColor: "#ffffff"
-      })
-      .setScrollFactor(0)
-      .setDepth(30);
-
+    camera.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+    camera.setSize(this.sys.game.config.width, this.game.config.height);
+  }
+  debugGraphics() {
     // Debug graphics
     this.input.keyboard.once("keydown_D", event => {
       // Turn on physics debugging to show player's hitbox
@@ -113,16 +130,14 @@ export default class MainScene extends Phaser.Scene {
         .graphics()
         .setAlpha(0.75)
         .setDepth(20);
-      layers.world.renderDebug(graphics, {
+      this.world.renderDebug(graphics, {
         tileColor: null, // Color of non-colliding tiles
         collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
         faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
       });
     });
-
-    this.events.on('resize', handleGameResize, this);
   }
-  update(time, delta) {
+  updatePlayer() {
     const speed = 175;
     const prevVelocity = this.player.body.velocity.clone();
 
