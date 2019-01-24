@@ -1,3 +1,4 @@
+
 export function handleGameResize(width = this.sys.game.config.width, height = this.sys.game.config.height) {
   this.cameras.resize(width, height);
 };

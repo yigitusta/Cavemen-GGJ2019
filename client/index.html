@@ -4,36 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    .game-container {
-      min-width: 100vw;
-      min-height: 100vh;
-      background-image: linear-gradient(to bottom right, #9CFFFA, #81F495);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .login {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      left: 50%;
-      top: 50%;
-    }
-  </style>
   <title>CaveMen</title>
 </head>
 <body>
   <div id="game-container" class="game-container"></div>
-  <form class="login">
-    <label for="username">Username: </label>
-    <input type="text" name="username" id="username" class="username">
-    <input type="submit" class="submit">
-  </form>
   <script src="./src/index.js"></script>
+
+  <style type="text/css">
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin:0;
+    }
+  </style>
 </body>
 </html>
