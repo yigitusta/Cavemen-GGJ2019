@@ -25,3 +25,12 @@ export function handleWindowResize() {
     }
   }
 };
+
+export function cursorToDir(cursors) {
+  return {
+    left: cursors.left.isDown,
+    right: cursors.right.isDown,
+    up: cursors.up.isDown,
+    down: cursors.down.isDown
+  };
+}
