@@ -13,11 +13,12 @@ export default class LoginScene extends Phaser.Scene {
   }
 
   create() {
-
+    this.input.keyboard.on('keydown_A', (event) => {
+      this.scene.start('main');
+    });
   }
 
   update() {
 
   }
-  
 }
