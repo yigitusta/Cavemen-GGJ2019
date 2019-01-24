@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 export default class Player extends Phaser.GameObjects.Container {
-  constructor(scene, x, y, children) {
+  constructor(scene, x, y, children, { username }) {
     super(scene, x, y, children);
     const main = Object.assign(
       scene.add.sprite(0, -12, "atlas", "misa-front"),
@@ -9,10 +9,13 @@ export default class Player extends Phaser.GameObjects.Container {
     );
     this.add(main);
     const name = Object.assign(
-      scene.add.text(-30, -36, "Mahmut"),
-      { name: 'name' }
+      scene.add.text(-26, -36, username, {
+        font: "12px monospace",
+        fill: "#000000",
+        backgroundColor: "rgba(255, 255, 255, 0.7)"
+      }),
+      { name: "name" }
     );
-    console.log(name);
     this.add(name);
     this.setSize(28, 38);
     this.state = {

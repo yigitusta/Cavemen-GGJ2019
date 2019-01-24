@@ -11,16 +11,14 @@ import Player from '../components/Player';
 export default class MainScene extends Phaser.Scene {
   constructor() {
     super({ key: "main" });
+    this.state = {};
+  }
+  init({ username }) {
+    this.state.username = username;
   }
   preload() {
     this.load.image("tiles", tiles);
     this.load.tilemapTiledJSON("map", tilemap);
-
-    // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
-    // the player animations (walking left, walking right, etc.) in one image. For more info see:
-    //  https://labs.phaser.io/view.html?src=src/animation/texture%20atlas%20animation.js
-    // If you don't use an atlas, you can do the same thing with a spritesheet, see:
-    //  https://labs.phaser.io/view.html?src=src/animation/single%20sprite%20sheet.js
     this.load.atlas("atlas", atlasImg, atlasJson);
   }
   create() {
@@ -35,30 +33,18 @@ export default class MainScene extends Phaser.Scene {
   update(time, delta) {
     this.updatePlayer();
   }
-
-  // custom methods
   createMap() {
     this.map = this.make.tilemap({ key: "map" });
-
-    // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
-    // Phaser's cache (i.e. the name you used in preload)
     const tileset = this.map.addTilesetImage("tuxmon-sample-32px-extruded", "tiles");
-
-    // Parameters: layer name (or index) from Tiled, tileset, x, y
     const below = this.map.createStaticLayer("Below Player", tileset, 0, 0);
     const world = this.map.createStaticLayer("World", tileset, 0, 0);
     const above = this.map.createStaticLayer("Above Player", tileset, 0, 0);
 
     world.setCollisionByProperty({ collides: true });
-
-    // By default, everything gets depth sorted on the screen in the order we created things. Here, we
-    // want the "Above Player" layer to sit on top of the player, so we explicitly give it a depth.
-    // Higher depths will sit on top of lower depth objects.
     above.setDepth(10);
     this.world = world;
   }
   createUI() {
-    // Help text that has a "fixed" position on the screen
     const x = this.add
       .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
         font: "18px monospace",
@@ -72,7 +58,7 @@ export default class MainScene extends Phaser.Scene {
   createPlayer() {
     Player.createAnimations(this);
     const {x, y} = this.map.findObject("Objects", obj => obj.name === "Spawn Point");
-    this.player = new Player(this, x, y);
+    this.player = new Player(this, x, y, null, { username: this.state.username });
   }
   createCamera() {
     const camera = this.cameras.main;
