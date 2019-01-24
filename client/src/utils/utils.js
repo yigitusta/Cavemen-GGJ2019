@@ -5,7 +5,7 @@ export function handleGameResize(width = this.sys.game.config.width, height = th
 
 export function handleWindowResize() {
   window.addEventListener('resize', function() {
-    window.game.resize(window.innerWidth, window.innerHeight);
+    window.game && window.game.resize(window.innerWidth, window.innerHeight);
   }, false);
 
   const container = document.querySelector('.game-container');
