@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import * as Graphics from "../utils/graphics";
+import io from 'socket.io-client';
 
 export default class LoginScene extends Phaser.Scene {
   constructor() {
@@ -25,6 +26,24 @@ export default class LoginScene extends Phaser.Scene {
       }
       if (event.key === "Enter") {
         this.scene.start("main", { username: textEntry.text });
+
+        const socket = io(`http://localhost:${process.env.PORT || 3000}`);
+
+        const player = {
+          x: 0,
+          y: 0,
+          username: textEntry.text
+        };
+
+        socket.emit('start',player, (data) => {
+          if (data === true) {
+            window.player = player;
+          }
+        });
+
+        socket.on('heartbeat', (data) => {
+          console.log("Players: ", data);
+        });
       }
     });
   }

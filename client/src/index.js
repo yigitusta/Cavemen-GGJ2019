@@ -22,17 +22,6 @@ const config = {
 
 window.game = new Phaser.Game(config);
 
-/*
-const login = document.querySelector(".login");
-login.addEventListener("submit", function(e){
-  e.preventDefault();
-  const username = e.target.querySelector(".username").value;
-  e.target.style.display = "none";
-  config.username = username;
-  window.game = new Phaser.Game(config);
-});
-*/
-
 handleWindowResize();
 
 if (module.hot) {
