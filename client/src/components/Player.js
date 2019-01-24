@@ -5,10 +5,16 @@ export default class Player extends Phaser.GameObjects.Container {
     super(scene, x, y, children);
     const main = Object.assign(
       scene.add.sprite(0, -12, "atlas", "misa-front"),
-      { name: "main" }
+      { name: "main"}
     );
-    this.setSize(28, 38);
     this.add(main);
+    const name = Object.assign(
+      scene.add.text(-30, -36, "Mahmut"),
+      { name: 'name' }
+    );
+    console.log(name);
+    this.add(name);
+    this.setSize(28, 38);
     this.state = {
       speed: 175
     };
