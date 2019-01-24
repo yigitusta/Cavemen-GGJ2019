@@ -7,14 +7,16 @@ import atlasJson from '../assets/atlas/atlas.json';
 
 import * as utils from '../utils/utils';
 import Player from '../components/Player';
+import io from 'socket.io-client';
 
 export default class MainScene extends Phaser.Scene {
   constructor() {
     super({ key: "main" });
     this.state = {};
   }
-  init({ username }) {
-    this.state.username = username;
+  init({ players, player }) {
+    this.state.players = players;
+    this.state.player = player;
   }
   preload() {
     this.load.image("tiles", tiles);
@@ -24,6 +26,7 @@ export default class MainScene extends Phaser.Scene {
   create() {
     this.createMap();
     this.createPlayer();
+    this.createPlayers();
     this.createCamera();
     this.createUI();
     this.debugGraphics();
@@ -57,8 +60,14 @@ export default class MainScene extends Phaser.Scene {
   }
   createPlayer() {
     Player.createAnimations(this);
-    const {x, y} = this.map.findObject("Objects", obj => obj.name === "Spawn Point");
-    this.player = new Player(this, x, y, null, { username: this.state.username });
+    const p = this.state.player;
+    //const {x, y} = this.map.findObject("Objects", obj => obj.name === "Spawn Point");
+    this.player = new Player(this, p.x, p.y, null, { username: p.username });
+  }
+  createPlayers() {
+    this.players = this.state.players.map((player) => {
+      return new Player(this, player.x, player.y, null, { username: player.username })  
+    })
   }
   createCamera() {
     const camera = this.cameras.main;

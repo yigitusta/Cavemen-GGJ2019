@@ -19,9 +19,12 @@ io.sockets.on('connection', (socket) => {
       username: data.username
     };
 
-    callback("user succesfull");
     players.push(player);
-    console.log(players);
+
+    callback({
+      status: true,
+      players: players
+    });
   });
 });
 

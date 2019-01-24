@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import * as Graphics from "../utils/graphics";
 import io from 'socket.io-client';
+import Player from '../components/Player';
 
 export default class LoginScene extends Phaser.Scene {
   constructor() {
@@ -25,19 +26,20 @@ export default class LoginScene extends Phaser.Scene {
           textEntry.text += event.key;
       }
       if (event.key === "Enter") {
-        this.scene.start("main", { username: textEntry.text });
 
         const socket = io(`http://localhost:${process.env.PORT || 3000}`);
 
         const player = {
-          x: 0,
-          y: 0,
+          x: Math.floor(Math.random() * 400),
+          y: Math.floor(Math.random() * 400),
           username: textEntry.text
         };
 
         socket.emit('start',player, (data) => {
-          if (data === true) {
-            window.player = player;
+          if (data.status === true) {
+            //window.player = player;
+            const players = data.players;
+            this.scene.start("main", { players, player });
           }
         });
 
