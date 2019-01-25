@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-
 export default class Player extends Phaser.GameObjects.Container {
   constructor(scene, x, y, children, { username }) {
     super(scene, x, y, children);

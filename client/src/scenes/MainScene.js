@@ -1,14 +1,6 @@
 import Phaser from 'phaser';
-
-import tiles from  '../assets/tilesets/tuxmon-sample-32px-extruded.png';
-import tilemap from '../assets/tilemaps/tuxemon-town.json';
-import atlasImg from '../assets/atlas/atlas.png';
-import atlasJson from '../assets/atlas/atlas.json';
-
 import * as utils from '../utils/utils';
 import Player from '../components/Player';
-import io from 'socket.io-client';
-
 export default class MainScene extends Phaser.Scene {
   constructor() {
     super({ key: "main" });
@@ -18,12 +10,8 @@ export default class MainScene extends Phaser.Scene {
     this.state.players = players;
     this.state.player = player;
   }
-  preload() {
-    this.load.image("tiles", tiles);
-    this.load.tilemapTiledJSON("map", tilemap);
-    this.load.atlas("atlas", atlasImg, atlasJson);
-  }
   create() {
+    this.createAnimations();
     this.createMap();
     this.createPlayer();
     this.createPlayers();
@@ -35,6 +23,9 @@ export default class MainScene extends Phaser.Scene {
   }
   update(time, delta) {
     this.updatePlayer();
+  }
+  createAnimations() {
+    Player.createAnimations(this);
   }
   createMap() {
     this.map = this.make.tilemap({ key: "map" });
@@ -59,14 +50,12 @@ export default class MainScene extends Phaser.Scene {
       .setDepth(30);
   }
   createPlayer() {
-    Player.createAnimations(this);
     const p = this.state.player;
-    //const {x, y} = this.map.findObject("Objects", obj => obj.name === "Spawn Point");
     this.player = new Player(this, p.x, p.y, null, { username: p.username });
   }
   createPlayers() {
     this.players = this.state.players.map((player) => {
-      return new Player(this, player.x, player.y, null, { username: player.username })  
+      return new Player(this, player.x, player.y, null, { username: player.username })
     })
   }
   createCamera() {
@@ -76,20 +65,17 @@ export default class MainScene extends Phaser.Scene {
     camera.setSize(this.sys.game.config.width, this.game.config.height);
   }
   debugGraphics() {
-    // Debug graphics
     this.input.keyboard.once("keydown_D", event => {
-      // Turn on physics debugging to show player's hitbox
       this.physics.world.createDebugGraphic();
 
-      // Create worldLayer collision graphic above the player, but below the help text
       const graphics = this.add
         .graphics()
         .setAlpha(0.75)
         .setDepth(20);
       this.world.renderDebug(graphics, {
-        tileColor: null, // Color of non-colliding tiles
-        collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-        faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+        tileColor: null,
+        collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+        faceColor: new Phaser.Display.Color(40, 39, 37, 255)
       });
     });
   }
