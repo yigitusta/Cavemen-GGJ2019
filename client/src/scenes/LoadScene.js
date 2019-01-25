@@ -6,6 +6,8 @@ import atlasImg from '../assets/atlas/atlas.png';
 import atlasJson from '../assets/atlas/atlas.json';
 import CST from '../CST';
 import meat from '../assets/images/meat.png';
+import gamescreen from '../assets/images/gamescreen.png';
+import logo from '../assets/images/logo.png';
 
 export default class LoadScene extends Phaser.Scene {
     constructor() {
@@ -20,6 +22,8 @@ export default class LoadScene extends Phaser.Scene {
       this.load.atlas("atlas", atlasImg, atlasJson);
       this.load.atlas("atlas", atlasImg, atlasJson);
       this.load.image("meat", meat);
+      this.load.image("gamescreen", gamescreen);
+      this.load.image('logo', logo);
 
         let loadingBar = this.add.graphics({
             fillStyle: {
