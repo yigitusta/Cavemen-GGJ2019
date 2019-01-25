@@ -61,8 +61,9 @@ export default class MainScene extends Phaser.Scene {
     this.players.forEach(player => {
       // find the corresponding player from the data obtained from current players from server
       const currentPlayer = currentPlayers.find((cp) => player.id === cp.id);
-      const vx = currentPlayer.x - player.x;
-      const vy = currentPlayer.y - player.y;
+      const vx = Math.floor(currentPlayer.x - player.x);
+      const vy = Math.floor(currentPlayer.y - player.y);
+
       if (vx > 0) {
         player.move({ right: true }, vx);
       } else if (vx < 0) {
@@ -74,6 +75,11 @@ export default class MainScene extends Phaser.Scene {
       } else if (vy < 0) {
         player.move({ up: true }, vy);
       }
+
+      if (vx * vx + vy * vy < 1) {
+        player.move({}, 0);
+      }
+
       player.x = currentPlayer.x;
       player.y = currentPlayer.y;
     });

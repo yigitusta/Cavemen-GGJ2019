@@ -25,7 +25,7 @@ export default class LoginScene extends Phaser.Scene {
       }
       if (event.key === "Enter") {
 
-        const socket = window.socket = io(`http://192.168.5.76:${process.env.PORT || 3000}`);
+        const socket = window.socket = io(`http://${window.location.hostname}:${process.env.PORT || 3000}`);
 
         const player = new PlayerShape(null, textEntry.text);
 
@@ -39,8 +39,6 @@ export default class LoginScene extends Phaser.Scene {
         socket.on('heartbeat', (data) => {
           this.scene.get(CST.SCENES.MAIN).events.emit('heartbeat', data);
         });
-
-
       }
     });
   }
