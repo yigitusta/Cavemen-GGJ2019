@@ -11,6 +11,7 @@ export default class MainScene extends Phaser.Scene {
   init({ players, player }) {
     this.state.players = players;
     this.state.player = player;
+    console.log(players);
   }
   create() {
     this.createAnimations();

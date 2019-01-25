@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import io from 'socket.io-client';
 
+import PlayerShape from '../../../common/PlayerShape';
 import CST from '../CST';
 export default class LoginScene extends Phaser.Scene {
   constructor() {
@@ -26,22 +27,17 @@ export default class LoginScene extends Phaser.Scene {
 
         const socket = io(`http://localhost:${process.env.PORT || 3000}`);
 
-        const player = {
-          x: Math.floor(Math.random() * 400),
-          y: Math.floor(Math.random() * 400),
-          username: textEntry.text
-        };
+        const player = new PlayerShape(null, textEntry.text);
 
         socket.emit('start',player, (data) => {
           if (data.status === true) {
-            //window.player = player;
             const players = data.players;
             this.scene.start(CST.SCENES.MAIN, { players, player });
           }
         });
 
         socket.on('heartbeat', (data) => {
-          console.log("Players: ", data);
+
         });
       }
     });

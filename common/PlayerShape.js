@@ -1,10 +1,12 @@
-export default class PlayerShape {
-  constructor({id, x, y, food, health, username}) {
+class PlayerShape {
+  constructor(id, username, x, y, food, health) {
     this.id = id;
+    this.username = username;
     this.x = x || Math.floor(Math.random() * 500);
     this.y = y || Math.floor(Math.random() * 400);
     this.food = food || 100;
     this.health = health || 100;
-    this.username = username;
   }
 }
+
+module.exports = PlayerShape;
