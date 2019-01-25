@@ -1,7 +1,7 @@
 
 
 
-export function addRect({ x, y, width, height, color, alpha=1 , ctx }) {
+export function addRect({ x, y, width, height, color=0xffffff, alpha=1 , ctx }) {
   const rect = ctx.add.graphics({
     fillStyle: {
       color,

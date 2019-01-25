@@ -2,6 +2,9 @@ import Phaser from 'phaser';
 import * as Graphics from "../utils/graphics";
 import io from 'socket.io-client';
 import Player from '../components/Player';
+import tiles from  '../assets/tilesets/tuxmon-sample-32px-extruded.png';
+import atlasImg from '../assets/atlas/atlas.png';
+import atlasJson from '../assets/atlas/atlas.json';
 
 export default class LoginScene extends Phaser.Scene {
   constructor() {
@@ -11,6 +14,24 @@ export default class LoginScene extends Phaser.Scene {
     this.state = {
       username: ""
     };
+  }
+  preload() {
+    for(let i =0; i < 15500; i++) {
+      this.load.atlas("atlas", atlasImg, atlasJson);
+    };
+
+    const loadingBar = this.add.graphics({
+      fillStyle: {
+        color: 0xFFFFFF
+      }
+    })
+    this.load.on('progress', (percent) => {
+      const width = this.game.renderer.width;
+      const height = this.game.renderer.height;
+      
+      const generatedWidth = (width * percent) / 2;
+      Graphics.addRect({ x: width / 2 - generatedWidth / 2, y: height / 2, width: generatedWidth, height: 50, ctx: this });
+    });
   }
   create() {
     this.add.text(10, 10, 'Enter your name:', { font: '32px Courier', fill: '#ffffff' });
