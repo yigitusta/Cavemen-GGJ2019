@@ -6,7 +6,7 @@ const io = socketio(expressServer);
 
 const PlayerShape = require('./common/PlayerShape');
 
-const players = [];
+let players = [];
 
 app.use('/', express.static('client/dist'))
 
@@ -15,22 +15,37 @@ app.get('/players', function (req, res) {
 })
 
 io.sockets.on('connection', (socket) => {
+  const { id } = socket;
+
   socket.on('start', (data, callback) => {
-    const { id } = socket;
     const { x, y, username } = data;
     const player = new PlayerShape(id, username, x, y);
 
     callback({
       status: true,
-      players: players
+      players: players,
+      player: player
     });
 
     console.log("Connected Player: ", player, "\n");
 
     players.push(player);
   });
+
+  socket.on('update', (data) => {
+    const player = players.find((player) => data.id === player.id);
+    if (!!player) {
+      const {x, y} = data;
+      player.x = x;
+      player.y = y;
+    }
+  });
+
+  socket.on('disconnect', () => {
+    players = players.filter(p => p.id !== socket.id);
+  });
 });
 
 setInterval(() => {
   io.sockets.emit('heartbeat', players);
-},100000);
+}, 33);

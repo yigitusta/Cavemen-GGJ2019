@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 export default class Player extends Phaser.GameObjects.Container {
-  constructor(scene, x, y, children, { username }) {
+  constructor(scene, x, y, children, { username, id }) {
     super(scene, x, y, children);
     const main = Object.assign(
       scene.add.sprite(0, -12, "atlas", "misa-front"),
@@ -17,12 +17,10 @@ export default class Player extends Phaser.GameObjects.Container {
     );
     this.add(name);
     this.setSize(28, 38);
-    this.state = {
-      speed: 175
-    };
     scene.physics.world.enable(this);
     scene.physics.add.collider(this, scene.world);
     scene.add.existing(this);
+    this.id = id;
   }
   static createAnimations(scene) {
     const { anims } = scene;
@@ -51,24 +49,24 @@ export default class Player extends Phaser.GameObjects.Container {
       repeat: -1
     });
   }
-  move({left, right, up, down}) {
+  move({left, right, up, down}, speed = 175) {
     const main = this.getByName("main");
     const prevVelocity = this.body.velocity.clone();
     this.body.setVelocity(0);
 
     if (left) {
-      this.body.setVelocityX(-this.state.speed);
+      this.body.setVelocityX(-speed);
     } else if (right) {
-      this.body.setVelocityX(this.state.speed);
+      this.body.setVelocityX(speed);
     }
 
     if (up) {
-      this.body.setVelocityY(-this.state.speed);
+      this.body.setVelocityY(-speed);
     } else if (down) {
-      this.body.setVelocityY(this.state.speed);
+      this.body.setVelocityY(speed);
     }
 
-    this.body.velocity.normalize().scale(this.state.speed);
+    this.body.velocity.normalize().scale(speed);
 
     if (left) {
       main.anims.play("misa-left-walk", true);

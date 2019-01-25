@@ -12,7 +12,6 @@ export default class MainScene extends Phaser.Scene {
   init({ players, player }) {
     this.state.players = players;
     this.state.player = player;
-    console.log(players);
   }
   create() {
     this.createAnimations();
@@ -24,12 +23,60 @@ export default class MainScene extends Phaser.Scene {
     this.debugGraphics();
     this.cursors = this.input.keyboard.createCursorKeys();
     this.events.on('resize', utils.handleGameResize, this);
+    this.events.on('heartbeat', this.handlePlayers, this);
 
     this.statusBar = new StatusBar(this);
     this.statusBar.createStatusBar({ health: 100, foodNumber: 960 }, this);
+
   }
   update(time, delta) {
     this.updatePlayer();
+    this.notifyServer();
+  }
+  notifyServer() {
+    const socket = window.socket;
+    const {x, y, id} = this.player;
+    socket.emit('update', {x ,y, id});
+  }
+  handlePlayers(players) {
+    // current players obtained from server other than the current player
+    const currentPlayers = players.filter(p => p.id !== this.player.id);
+
+    // handle disconnected players
+    this.players.forEach((player) => {
+      if (!currentPlayers.find((currentPlayer) => currentPlayer.id === player.id)) {
+        this.players.splice(this.players.findIndex(p => p.id === player.id), 1);
+        player.destroy();
+      }
+    });
+
+    // handle new players
+    currentPlayers.forEach((currentPlayer) => {
+      if (!this.players.find((player) => currentPlayer.id === player.id)) {
+        this.players.push(new Player(this, currentPlayer.x, currentPlayer.y, null, { username: currentPlayer.username, id: currentPlayer.id }));
+      }
+    });
+
+    // update player locations
+    this.players.forEach(player => {
+      // find the corresponding player from the data obtained from current players from server
+      const currentPlayer = currentPlayers.find((cp) => player.id === cp.id);
+      const vx = currentPlayer.x - player.x;
+      const vy = currentPlayer.y - player.y;
+      if (vx > 0) {
+        player.move({ right: true }, vx);
+      } else if (vx < 0) {
+        player.move({ left: true }, vx);
+      }
+
+      if (vy > 0) {
+        player.move({ down: true }, vy);
+      } else if (vy < 0) {
+        player.move({ up: true }, vy);
+      }
+      player.x = currentPlayer.x;
+      player.y = currentPlayer.y;
+    });
   }
   createAnimations() {
     Player.createAnimations(this);
@@ -57,13 +104,15 @@ export default class MainScene extends Phaser.Scene {
     //   .setDepth(30);
   }
   createPlayer() {
-    const p = this.state.player;
-    this.player = new Player(this, p.x, p.y, null, { username: p.username });
+    const { x, y, id, username } = this.state.player;
+    this.player = new Player(this, x, y, null, { username, id });
+    delete this.state.player;
   }
   createPlayers() {
-    this.players = this.state.players.map((player) => {
-      return new Player(this, player.x, player.y, null, { username: player.username })
-    })
+    this.players = this.state.players.map(({x, y, id, username}) => {
+      return new Player(this, x, y, null, { username, id });
+    });
+    delete this.state.players;
   }
   createCamera() {
     const camera = this.cameras.main;

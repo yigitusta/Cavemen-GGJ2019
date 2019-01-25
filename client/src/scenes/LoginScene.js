@@ -25,20 +25,22 @@ export default class LoginScene extends Phaser.Scene {
       }
       if (event.key === "Enter") {
 
-        const socket = io(`http://localhost:${process.env.PORT || 3000}`);
+        const socket = window.socket = io(`http://192.168.5.76:${process.env.PORT || 3000}`);
 
         const player = new PlayerShape(null, textEntry.text);
 
-        socket.emit('start',player, (data) => {
+        socket.emit('start', player, (data) => {
           if (data.status === true) {
-            const players = data.players;
+            const { player, players } = data;
             this.scene.start(CST.SCENES.MAIN, { players, player });
           }
         });
 
         socket.on('heartbeat', (data) => {
-
+          this.scene.get(CST.SCENES.MAIN).events.emit('heartbeat', data);
         });
+
+
       }
     });
   }
