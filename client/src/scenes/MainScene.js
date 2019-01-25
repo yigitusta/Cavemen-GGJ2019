@@ -1,9 +1,11 @@
 import Phaser from 'phaser';
 import * as utils from '../utils/utils';
 import Player from '../components/Player';
+
+import CST from '../CST';
 export default class MainScene extends Phaser.Scene {
   constructor() {
-    super({ key: "main" });
+    super({ key:  CST.SCENES.MAIN });
     this.state = {};
   }
   init({ players, player }) {

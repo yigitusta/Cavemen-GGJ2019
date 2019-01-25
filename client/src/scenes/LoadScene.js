@@ -4,10 +4,11 @@ import tiles from  '../assets/tilesets/tuxmon-sample-32px-extruded.png';
 import tilemap from '../assets/tilemaps/tuxemon-town.json';
 import atlasImg from '../assets/atlas/atlas.png';
 import atlasJson from '../assets/atlas/atlas.json';
+import CST from '../CST';
 
 export default class LoadScene extends Phaser.Scene {
     constructor() {
-        super({ key: "load" });
+        super({ key: CST.SCENES.LOAD });
     }
     init() {
 
@@ -28,6 +29,6 @@ export default class LoadScene extends Phaser.Scene {
         })
     }
     create() {
-        this.scene.start("login");
+        this.scene.start(CST.SCENES.LOGIN);
     }
 }

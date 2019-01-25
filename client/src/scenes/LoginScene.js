@@ -1,12 +1,10 @@
 import Phaser from 'phaser';
-import * as Graphics from "../utils/graphics";
 import io from 'socket.io-client';
 
+import CST from '../CST';
 export default class LoginScene extends Phaser.Scene {
   constructor() {
-    super({
-      key: 'login'
-    });
+    super({ key: CST.SCENES.LOGIN });
     this.state = {
       username: ""
     };
@@ -38,7 +36,7 @@ export default class LoginScene extends Phaser.Scene {
           if (data.status === true) {
             //window.player = player;
             const players = data.players;
-            this.scene.start("main", { players, player });
+            this.scene.start(CST.SCENES.MAIN, { players, player });
           }
         });
 
