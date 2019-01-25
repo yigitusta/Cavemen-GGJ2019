@@ -18,7 +18,6 @@ export default class LoginScene extends Phaser.Scene {
     const background = this.add.image(0,0, "gamescreen");
     // background.setSize(camera.config.width, camera.config.height);
 
-    console.log(camera);
     this.add.image(camera.centerX - 335, camera.config.height / 2 - 250, "logo");
     
     // this.add.text(camera.centerX / 2, 200, 'Caveman', {

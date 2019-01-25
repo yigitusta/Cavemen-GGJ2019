@@ -24,7 +24,7 @@ const config = {
 
 window.game = new Phaser.Game(config);
 
-// handleWindowResize();
+handleWindowResize();
 
 if (module.hot) {
   module.hot.accept(() => {});

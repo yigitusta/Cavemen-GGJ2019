@@ -20,10 +20,9 @@ export default class LoadScene extends Phaser.Scene {
       this.load.image("tiles", tiles);
       this.load.tilemapTiledJSON("map", tilemap);
       this.load.atlas("atlas", atlasImg, atlasJson);
-      this.load.atlas("atlas", atlasImg, atlasJson);
       this.load.image("meat", meat);
+      this.load.image("logo", logo);
       this.load.image("gamescreen", gamescreen);
-      this.load.image('logo', logo);
 
         let loadingBar = this.add.graphics({
             fillStyle: {
