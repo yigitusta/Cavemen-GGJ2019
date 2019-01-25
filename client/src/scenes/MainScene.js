@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import * as utils from '../utils/utils';
+import StatusBar from '../components/StatusBar';
 import Player from '../components/Player';
 
 import CST from '../CST';
@@ -23,6 +24,9 @@ export default class MainScene extends Phaser.Scene {
     this.debugGraphics();
     this.cursors = this.input.keyboard.createCursorKeys();
     this.events.on('resize', utils.handleGameResize, this);
+
+    this.statusBar = new StatusBar(this);
+    this.statusBar.createStatusBar({ health: 100, foodNumber: 960 }, this);
   }
   update(time, delta) {
     this.updatePlayer();
@@ -42,15 +46,15 @@ export default class MainScene extends Phaser.Scene {
     this.world = world;
   }
   createUI() {
-    const x = this.add
-      .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
-        font: "18px monospace",
-        fill: "#000000",
-        padding: { x: 20, y: 10 },
-        backgroundColor: "#ffffff"
-      })
-      .setScrollFactor(0)
-      .setDepth(30);
+    // const x = this.add
+    //   .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
+    //     font: "18px monospace",
+    //     fill: "#000000",
+    //     padding: { x: 20, y: 10 },
+    //     backgroundColor: "#ffffff"
+    //   })
+    //   .setScrollFactor(0)
+    //   .setDepth(30);
   }
   createPlayer() {
     const p = this.state.player;

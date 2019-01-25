@@ -33,4 +33,4 @@ io.sockets.on('connection', (socket) => {
 
 setInterval(() => {
   io.sockets.emit('heartbeat', players);
-},33);
+},100000);

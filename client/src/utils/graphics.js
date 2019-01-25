@@ -10,6 +10,7 @@ export function addRect({ x, y, width, height, color=0xffffff, alpha=1 , ctx }) 
   });
 
   rect.fillRect( x, y, width, height);
+  return rect;
 }
 
 
