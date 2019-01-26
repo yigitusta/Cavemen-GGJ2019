@@ -15,7 +15,7 @@ export default class StatusBar {
 
       style.innerHTML = `
         .statusBar {
-          background-color: rgba(255,255,255,0.6);
+          background-color: rgba(44, 62, 80, 0.9);
           width: CST.STATUS_BAR.WIDTH;
           height: CST.STATUS_BAR.HEIGHT;
           margin: 16px;
@@ -134,7 +134,7 @@ export default class StatusBar {
       .statusBar .food {
         font-size:18px;
         font: 18px monospace;
-        color: #4a4a4a;
+        color: #fff;
         font-weight: bold;
         display: flex;
         align-items: center;

@@ -27,7 +27,8 @@ export default class MainScene extends Phaser.Scene {
 
     this.statusBar = new StatusBar(this);
     this.statusBar.createStatusBar({ health: 100, food: 10 }, this);
-
+    
+    window.chat = document.querySelector('#chat-app');
     this.WASD = utils.getWASD(this);
     // this.input.on('pointerup', this.handleCombat.bind(this));
     this.input.keyboard.on('keyup', this.handleInput.bind(this));
@@ -216,7 +217,7 @@ export default class MainScene extends Phaser.Scene {
     });
   }
   updatePlayer() {
-    const dirs = this.WASD();
+    const dirs = this.WASD && this.WASD();
     this.player.move(dirs);
     if (this.player.health <= 0) {
       this.scene.start(CST.SCENES.GAME_OVER);
@@ -245,20 +246,35 @@ export default class MainScene extends Phaser.Scene {
           id: id,
           food: food + 1
         };
-        console.log(obj);
+
         image.destroy();
         window.socket.emit('meatEating', obj);
       }, null, this);
     });
   }
   handleInput(event) {
-    console.log(event);
-    if (event.key == 'h') {
-      this.spentMeat();
+    let entry = window.chat.querySelector("input[type='text']");
+    if (event.key == 't') {
+      if (!window.conversationBoxOpened) {
+        this.handleConversationBox();
+        window.conversationBoxOpened = true;
+      }
     }
 
-    if (event.keyCode == 32) {
-      this.handleCombat();
+    if (!window.conversationBoxOpened) {
+      if (event.key == 'h') {
+        this.spentMeat();
+      }
+  
+      if (event.keyCode == 32) {
+        this.handleCombat();
+      }
+    } else {
+      if (event.keyCode === 8 && entry.value.length > 0) {
+        entry.value = entry.value.substr(0, entry.value.length - 1);
+      } else if (event.keyCode === 32 || (event.keyCode >= 48 && event.keyCode <= 90)) {
+          entry.value += event.key;
+      }
     }
   }
   spentMeat() {
@@ -274,6 +290,18 @@ export default class MainScene extends Phaser.Scene {
       };
 
       window.socket.emit('foodSpending', obj);
+    }
+  }
+
+  handleConversationBox() {
+    let entry = window.chat.querySelector("input[type='text']");
+    entry.value = '';
+
+    if (window.chat.classList.contains('active')) {
+      window.chat.classList.add('remove');
+      entry.value = '';
+    } else {
+      window.chat.classList.add('active');
     }
   }
 }

@@ -51,53 +51,55 @@ export default class Player extends Phaser.GameObjects.Container {
     });
   }
   move({left, right, up, down}, speed = 175) {
-    const main = this.getByName("main");
-    const prevVelocity = this.body.velocity.clone();
-    this.body.setVelocity(0);
-
-    if (left) {
-      this.body.setVelocityX(-speed);
-    } else if (right) {
-      this.body.setVelocityX(speed);
-    }
-
-    if (up) {
-      this.body.setVelocityY(-speed);
-    } else if (down) {
-      this.body.setVelocityY(speed);
-    }
-
-    this.body.velocity.normalize().scale(speed);
-
-    if (left) {
-      main.anims.play("misa-left-walk", true);
-      this.facing = "left";
-    } else if (right) {
-      main.anims.play("misa-right-walk", true);
-      this.facing = "right";
-    } else if (up) {
-      main.anims.play("misa-back-walk", true);
-      this.facing = "up";
-    } else if (down) {
-      main.anims.play("misa-front-walk", true);
-      this.facing = "down";
-    } else {
-      main.anims.stop();
-      if (prevVelocity.x < 0) {
-        main.setTexture("atlas", "misa-left");
+    if (!window.conversationBoxOpened) {
+      const main = this.getByName("main");
+      const prevVelocity = this.body.velocity.clone();
+      this.body.setVelocity(0);
+  
+      if (left) {
+        this.body.setVelocityX(-speed);
+      } else if (right) {
+        this.body.setVelocityX(speed);
+      }
+  
+      if (up) {
+        this.body.setVelocityY(-speed);
+      } else if (down) {
+        this.body.setVelocityY(speed);
+      }
+  
+      this.body.velocity.normalize().scale(speed);
+  
+      if (left) {
+        main.anims.play("misa-left-walk", true);
         this.facing = "left";
-      }
-      else if (prevVelocity.x > 0) {
-        main.setTexture("atlas", "misa-right");
+      } else if (right) {
+        main.anims.play("misa-right-walk", true);
         this.facing = "right";
-      }
-      else if (prevVelocity.y < 0) {
-        main.setTexture("atlas", "misa-back")
+      } else if (up) {
+        main.anims.play("misa-back-walk", true);
         this.facing = "up";
-      }
-      else if (prevVelocity.y > 0) {
-        main.setTexture("atlas", "misa-front");
+      } else if (down) {
+        main.anims.play("misa-front-walk", true);
         this.facing = "down";
+      } else {
+        main.anims.stop();
+        if (prevVelocity.x < 0) {
+          main.setTexture("atlas", "misa-left");
+          this.facing = "left";
+        }
+        else if (prevVelocity.x > 0) {
+          main.setTexture("atlas", "misa-right");
+          this.facing = "right";
+        }
+        else if (prevVelocity.y < 0) {
+          main.setTexture("atlas", "misa-back")
+          this.facing = "up";
+        }
+        else if (prevVelocity.y > 0) {
+          main.setTexture("atlas", "misa-front");
+          this.facing = "down";
+        }
       }
     }
   }

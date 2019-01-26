@@ -10,6 +10,7 @@ const config = {
   width: window.innerWidth,
   height: window.innerHeight,
   parent: "game-container",
+  pixelArt: true,
   physics: {
     default: "arcade",
     arcade: {
