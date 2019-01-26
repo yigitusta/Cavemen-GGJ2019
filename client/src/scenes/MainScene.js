@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import * as utils from '../utils/utils';
 import StatusBar from '../components/StatusBar';
 import Player from '../components/Player';
+import * as Scoreboard from '../components/Scoreboard';
 
 import CST from '../CST';
 export default class MainScene extends Phaser.Scene {
@@ -17,6 +18,7 @@ export default class MainScene extends Phaser.Scene {
   create() {
     this.createAnimations();
     this.createMap();
+    this.createUI();
     this.createPlayer();
     this.createPlayers();
     this.createCamera();
@@ -25,9 +27,6 @@ export default class MainScene extends Phaser.Scene {
     this.events.on('resize', utils.handleGameResize, this);
     this.events.on('heartbeat', this.handlePlayers, this);
 
-    this.statusBar = new StatusBar(this);
-    this.statusBar.createStatusBar({ health: 100, food: 10 }, this);
-    
     window.chat = document.querySelector('#chat-app');
     this.WASD = utils.getWASD(this);
     // this.input.on('pointerup', this.handleCombat.bind(this));
@@ -36,6 +35,11 @@ export default class MainScene extends Phaser.Scene {
   update(time, delta) {
     this.updatePlayer();
     this.notifyServer();
+  }
+  createUI() {
+    this.statusBar = new StatusBar(this);
+    this.statusBar.createStatusBar({ health: 100, food: 10 }, this);
+    Scoreboard.open();
   }
   handleCombat() {
     let hitPlayer;
@@ -100,6 +104,11 @@ export default class MainScene extends Phaser.Scene {
 
       if (foodText && foodText.textContent != food) {
         this.statusBar.setFood({ food });
+        console.log("scoreboard update main player");
+        Scoreboard.updatePlayer({
+          id: this.player.id,
+          food: this.player.food
+        });
       }
     });
   }
@@ -111,6 +120,7 @@ export default class MainScene extends Phaser.Scene {
     this.players.forEach((player) => {
       if (!currentPlayers.find((currentPlayer) => currentPlayer.id === player.id)) {
         this.players.splice(this.players.findIndex(p => p.id === player.id), 1);
+        Scoreboard.removePlayer(player);
         player.destroy();
       }
     });
@@ -123,14 +133,19 @@ export default class MainScene extends Phaser.Scene {
           currentPlayer.x,
           currentPlayer.y,
           null,
-          { username: currentPlayer.username, id: currentPlayer.id }
+          { username: currentPlayer.username, id: currentPlayer.id, food: currentPlayer.food }
         );
+        Scoreboard.addPlayer({
+          id: currentPlayer.id,
+          username: currentPlayer.username,
+          food: currentPlayer.food
+        });
         this.players.push(p);
         this.physics.add.collider(this.player, p);
       }
     });
 
-    // update player locations
+    // update player locations and scoreboard food
     this.players.forEach(player => {
       // find the corresponding player from the data obtained from current players from server
       const currentPlayer = currentPlayers.find((cp) => player.id === cp.id);
@@ -155,6 +170,12 @@ export default class MainScene extends Phaser.Scene {
 
       player.x = currentPlayer.x;
       player.y = currentPlayer.y;
+
+      if (currentPlayer.food !== player.food) {
+        console.log("scoreboard update other players");
+        Scoreboard.updatePlayer({ id: currentPlayer.id, food: currentPlayer.food });
+        player.food = currentPlayer.food;
+      }
     });
 
     if (this.meats == null) {
@@ -184,12 +205,14 @@ export default class MainScene extends Phaser.Scene {
 
   createPlayer() {
     const { x, y, id, username } = this.state.player;
+    Scoreboard.addPlayer(this.state.player);
     this.player = new Player(this, x, y, null, { username, id });
     delete this.state.player;
   }
   createPlayers() {
-    this.players = this.state.players.map(({ x, y, id, username }) => {
-      const p = new Player(this, x, y, null, { username, id });
+    Scoreboard.addPlayers(this.state.players);
+    this.players = this.state.players.map(({ x, y, id, username, food }) => {
+      const p = new Player(this, x, y, null, { username, id, food });
       this.physics.add.collider(this.player, p);
       return p;
     });
@@ -222,6 +245,7 @@ export default class MainScene extends Phaser.Scene {
     if (this.player.health <= 0) {
       this.scene.start(CST.SCENES.GAME_OVER);
       this.statusBar.destroy();
+      Scoreboard.close();
       window.socket.emit('forceDisconnect');
     }
   }
@@ -265,7 +289,7 @@ export default class MainScene extends Phaser.Scene {
       if (event.key == 'h') {
         this.spentMeat();
       }
-  
+
       if (event.keyCode == 32) {
         this.handleCombat();
       }

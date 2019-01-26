@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import CST from '../CST';
 export default class Player extends Phaser.GameObjects.Container {
-  constructor(scene, x, y, children, { username, id }) {
+  constructor(scene, x, y, children, { username, id, food }) {
     super(scene, x, y, children);
     const main = Object.assign(
       scene.add.sprite(0, -12, "atlas", "misa-front"),
@@ -22,6 +22,7 @@ export default class Player extends Phaser.GameObjects.Container {
     scene.physics.add.existing(this, false);
     scene.physics.add.collider(this, scene.world);
     this.id = id;
+    this.food = food;
   }
   static createAnimations(scene) {
     const { anims } = scene;
@@ -55,21 +56,21 @@ export default class Player extends Phaser.GameObjects.Container {
       const main = this.getByName("main");
       const prevVelocity = this.body.velocity.clone();
       this.body.setVelocity(0);
-  
+
       if (left) {
         this.body.setVelocityX(-speed);
       } else if (right) {
         this.body.setVelocityX(speed);
       }
-  
+
       if (up) {
         this.body.setVelocityY(-speed);
       } else if (down) {
         this.body.setVelocityY(speed);
       }
-  
+
       this.body.velocity.normalize().scale(speed);
-  
+
       if (left) {
         main.anims.play("misa-left-walk", true);
         this.facing = "left";

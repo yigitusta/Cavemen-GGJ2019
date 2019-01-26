@@ -27,6 +27,7 @@ export default class StatusBar {
           align-items:center;
           justify-content:flex-start;
           flex-wrap: nowrap;
+          border-radius: 3px;
         }
       `;
 
