@@ -92,7 +92,7 @@ export default class MainScene extends Phaser.Scene {
 
       const healthText = document.querySelector('.statusBar .health-text');
       const foodText = document.querySelector('.statusBar .food span');
-      
+
       if (healthText && healthText.textContent.replace('%','') != health) {
         this.statusBar.setHealth({ health });
       }
@@ -235,7 +235,7 @@ export default class MainScene extends Phaser.Scene {
       const image = this.physics.add.image(meat.x, meat.y, 'meat');
       image.setCollideWorldBounds(true);
       this.meatImages.push(image);
-      
+
       const id = this.player.id;
       this.physics.add.overlap(image, player, () => {
         const food = parseInt(document.querySelector('.food span').textContent);
@@ -259,7 +259,7 @@ export default class MainScene extends Phaser.Scene {
 
     if (event.keyCode == 32) {
       this.handleCombat();
-    } 
+    }
   }
   spentMeat() {
     const {player} = this;

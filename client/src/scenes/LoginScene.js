@@ -80,10 +80,10 @@ export default class LoginScene extends Phaser.Scene {
     start.then((txt) => this.submitForm(txt));
   }
 
-  submitForm(textEntry) {
+  submitForm(text) {
     const socket = window.socket = io(`http://${window.location.hostname}:${process.env.PORT || 3000}`);
 
-    const player = new PlayerShape(null, textEntry.text);
+    const player = new PlayerShape(null, text);
 
     socket.emit('start', player, (data) => {
       if (data.status === true) {
