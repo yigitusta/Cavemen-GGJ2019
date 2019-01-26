@@ -228,6 +228,7 @@ export default class MainScene extends Phaser.Scene {
     this.player.move(dirs);
     if (this.player.health <= 0) {
       this.scene.start(CST.SCENES.GAME_OVER);
+      this.statusBar.destroy();
       window.socket.emit('forceDisconnect');
     }
   }

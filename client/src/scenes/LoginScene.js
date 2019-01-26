@@ -52,7 +52,6 @@ export default class LoginScene extends Phaser.Scene {
 
     text.setInteractive();
 
-    // button.setInteractive();
     this.input.on('gameobjectdown', (event) => {
       console.log(event);
       this.submitForm(textEntry);

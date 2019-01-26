@@ -143,4 +143,8 @@ export default class StatusBar {
       }
     `;
   }
+
+  destroy() {
+    this.statusBar.remove();
+  }
 };
