@@ -87,7 +87,12 @@ export default class MainScene extends Phaser.Scene {
     socket.emit('update', { x, y, id }, ({ health, food }) => {
       this.player.health = health;
       this.player.food = food;
-      this.statusBar.setHealth({ health });
+
+      const healthText = document.querySelector('.statusBar .health-text');
+
+      if (healthText.textContent.replace('%','') != health) {
+        this.statusBar.setHealth({ health });
+      }
       this.statusBar.setFood({ food });
     });
   }
