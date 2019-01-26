@@ -3,52 +3,120 @@ import Phaser from 'phaser';
 import * as Graphics from "../utils/graphics";
 
 import CST from '../CST';
+import { spawn } from 'child_process';
+import meat from '../assets/images/meat.png';
 
 export default class StatusBar {
 	constructor() {
-    const statusBar = document.createElement("div");
-    statusBar.style = {
-      backgroundColor: "#fff",
-      width: CST.STATUS_BAR.WIDTH,
-      height: CST.STATUS_BAR.HEIGHT,
-      margin: "16px",
-      position: "fixed",
-      zIndex: 1
+    if (document.querySelector('.statusBar')) {
+      document.querySelector('.statusBar').remove();
     }
+
+    const statusBar = document.createElement("div");
+    statusBar.classList.add('statusBar');
+    const style = document.createElement("style");
+
+    style.innerHTML = `
+      .statusBar {
+        background-color: rgba(255,255,255,0.6);
+        width: CST.STATUS_BAR.WIDTH;
+        height: CST.STATUS_BAR.HEIGHT;
+        margin: 16px;
+        position: fixed;
+        z-index: 1;
+        top: 20px;
+        left: 20px;
+        padding: 10px 20px;
+        display: flex;
+        align-items:center;
+        justify-content:flex-start;
+        flex-wrap: nowrap;
+      }
+    `;
+
+    this.statusBarStyle = style;
     this.statusBar = statusBar;
-    document.querySelector("body").append(statusBar);
+
+    document.querySelector("head").append(style);
+    document.querySelector("body").appendChild(statusBar);
   }
 
   createStatusBar({ health = 100, food = 100 }) {
-    this.createHealthBar(health);
-    this.createFood({ x: ((health * 2) + 80), food });
+    this.createHealthBar({ health });
+    this.createFood({ food });
   }
 
-	createHealthBar(health) {
+	createHealthBar({ health }) {
     const width = health * 2;
     const rect = document.createElement("div");
     rect.classList.add("health");
-    rect.style = {
-      left: 40,
-      top: 30,
-      width,
-      color: "#e74c3c",
-      position: "relative"
-    };
-    this.statusBar.append(rect);
+
+    const rect2 = document.createElement("div");
+    rect2.classList.add("health-after");
+
+    rect.appendChild(rect2);
+
+    this.statusBarStyle.innerHTML += `
+      .statusBar .health {
+        background-color: #c0392b;
+        width: ${width}px;
+        height: 24px;
+        position: relative;
+      }
+
+      .statusBar .health-after {
+        display: block;
+        position: absolute;
+        left:0;
+        top:0;
+        width: ${width}px;
+        height: 100%;
+        transition: 200ms ease-out;
+        background-color: #e74c3c;
+      }
+    `;
+
+    this.statusBar.appendChild(rect);
   };
 
-  setHealth(health) {
+  setHealth({ health }) {
     const width = health * 2;
-    this.statusBar.querySelector(".health");
+    this.statusBarStyle.innerHTML += `
+      .statusBar .health-after {
+        width: ${width}px;
+      }
+    `;
   }
 
-  createFood({x, food = 100 }, ctx) {
-    /*const img = ctx.add.image(x, 40, "meat");
-    const text = ctx.add.text(x + 20, 30, food, {
-      font: '18px monospace',
-      fill: '#4a4a4a',
-    });
-    */
+  setFood({ food }) {
+    document.querySelector('.statusBar .food span').innerText = food;
+  }
+
+  createFood({food}) {
+    const div = document.createElement('div');
+    div.classList.add('food');
+    const img = document.createElement('img');
+    img.setAttribute('src', meat);
+
+    const text = document.createElement('span');
+    text.innerText = food;
+
+    div.appendChild(img);
+    div.appendChild(text);
+
+    this.statusBar.appendChild(div);
+
+    this.statusBarStyle.innerHTML += `
+      .statusBar .food {
+        font-size:18px;
+        font: 18px monospace;
+        color: #4a4a4a;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-left: 15px;
+      }
+    `;
   }
 };

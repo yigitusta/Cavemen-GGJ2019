@@ -87,7 +87,8 @@ export default class MainScene extends Phaser.Scene {
     socket.emit('update', { x, y, id }, ({ health, food }) => {
       this.player.health = health;
       this.player.food = food;
-      this.statusBar.setHealth(health);
+      this.statusBar.setHealth({ health });
+      this.statusBar.setFood({ food });
     });
   }
   handlePlayers(players) {
@@ -139,6 +140,11 @@ export default class MainScene extends Phaser.Scene {
       if (vx * vx + vy * vy < 1) {
         player.move({}, 0);
       }
+
+      // const statusbar = new StatusBar();
+      // console.log(currentPlayer);
+      // statusbar.createStatusBar({ health: currentPlayer.health, food: currentPlayer.food });
+      // document.querySelector('.statusBar .health-after').style.width = currentPlayer.width
 
       player.x = currentPlayer.x;
       player.y = currentPlayer.y;
