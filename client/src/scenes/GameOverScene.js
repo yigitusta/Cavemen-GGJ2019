@@ -7,6 +7,7 @@ export default class GameOverScene extends Phaser.Scene {
         super({ key: CST.SCENES.GAME_OVER });
     }
     create() {
+        speechSynthesis.speak(new SpeechSynthesisUtterance("GAME OVER, BITCH."));
         this.add.text(16, 16, "GAME OVER, BITCH.", {
             fill: "#fff",
             font: "18px monospace",

@@ -28,6 +28,7 @@ export default class MainScene extends Phaser.Scene {
     this.statusBar = new StatusBar(this);
     this.statusBar.createStatusBar({ health: 100, foodNumber: 960 }, this);
 
+    this.WASD = utils.getWASD(this);
     this.input.on('pointerup', this.handleCombat.bind(this));
   }
   update(time, delta) {
@@ -187,7 +188,7 @@ export default class MainScene extends Phaser.Scene {
     camera.setSize(this.sys.game.config.width, this.game.config.height);
   }
   debugGraphics() {
-    this.input.keyboard.once("keydown_D", event => {
+    this.input.keyboard.once("keydown_U", event => {
       this.physics.world.createDebugGraphic();
 
       const graphics = this.add
@@ -202,7 +203,7 @@ export default class MainScene extends Phaser.Scene {
     });
   }
   updatePlayer() {
-    const dirs = utils.cursorToDir(this.cursors);
+    const dirs = this.WASD();
     this.player.move(dirs);
     if (this.player.health <= 0) {
       this.scene.start(CST.SCENES.GAME_OVER);

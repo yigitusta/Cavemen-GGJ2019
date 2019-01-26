@@ -34,3 +34,17 @@ export function cursorToDir(cursors) {
     down: cursors.down.isDown
   };
 }
+
+export function getWASD(ctx) {
+  const W = ctx.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+  const A = ctx.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+  const S = ctx.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+  const D = ctx.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+  return () => ({
+    left: A.isDown,
+    right: D.isDown,
+    up: W.isDown,
+    down: S.isDown
+  });
+}
