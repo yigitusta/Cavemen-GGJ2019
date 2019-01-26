@@ -9,6 +9,7 @@ import meat from '../assets/images/meat.png';
 import gamescreen from '../assets/images/gamescreen.png';
 import logo from '../assets/images/logo.png';
 
+import start_the_game_already_mp3 from '../assets/audio/start_the_game.mp3';
 export default class LoadScene extends Phaser.Scene {
     constructor() {
         super({ key: CST.SCENES.LOAD });
@@ -17,12 +18,13 @@ export default class LoadScene extends Phaser.Scene {
 
     }
     preload() {
-      this.load.image("tiles", tiles);
-      this.load.tilemapTiledJSON("map", tilemap);
-      this.load.atlas("atlas", atlasImg, atlasJson);
-      this.load.image("meat", meat);
-      this.load.image("logo", logo);
-      this.load.image("gamescreen", gamescreen);
+        this.load.image("tiles", tiles);
+        this.load.tilemapTiledJSON("map", tilemap);
+        this.load.atlas("atlas", atlasImg, atlasJson);
+        this.load.image("meat", meat);
+        this.load.image("logo", logo);
+        this.load.image("gamescreen", gamescreen);
+        this.load.audio("start_the_game_already", start_the_game_already_mp3);
 
         let loadingBar = this.add.graphics({
             fillStyle: {

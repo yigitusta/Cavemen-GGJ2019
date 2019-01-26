@@ -13,6 +13,7 @@ export default class LoginScene extends Phaser.Scene {
 
   }
   create() {
+    this.sound.add("start_the_game_already").play();
     const camera = this.cameras.main;
 
     const background = this.add.image(0,0, "gamescreen");
@@ -52,28 +53,31 @@ export default class LoginScene extends Phaser.Scene {
 
     text.setInteractive();
 
-    this.input.on('gameobjectdown', (event) => {
-      console.log(event);
-      this.submitForm(textEntry);
+    const start = new Promise((resolve, reject) => {
+      this.input.on('gameobjectdown', (event) => {
+        resolve(textEntry.text);
+      });
+
+      this.input.keyboard.on('keydown', (event) => {
+        if (textEntry.text == 'Enter your name') {
+          textEntry.text = '';
+        }
+
+        if (event.keyCode === 8 && textEntry.text.length > 1) {
+          textEntry.text = textEntry.text.substr(0, textEntry.text.length - 1);
+        } else if (event.keyCode === 8 && textEntry.text.length == 1) {
+            textEntry.text = 'Enter your name:';
+        } else if (event.keyCode === 32 || (event.keyCode >= 48 && event.keyCode <= 90)) {
+            textEntry.text += event.key;
+        }
+
+        if (event.key === "Enter") {
+          resolve(textEntry.text);
+        }
+      });
     });
 
-    this.input.keyboard.on('keydown', (event) => {
-      if (textEntry.text == 'Enter your name') {
-        textEntry.text = '';
-      }
-
-      if (event.keyCode === 8 && textEntry.text.length > 1) {
-        textEntry.text = textEntry.text.substr(0, textEntry.text.length - 1);
-      } else if (event.keyCode === 8 && textEntry.text.length == 1) {
-          textEntry.text = 'Enter your name:';
-      } else if (event.keyCode === 32 || (event.keyCode >= 48 && event.keyCode <= 90)) {
-          textEntry.text += event.key;
-      }
-
-      if (event.key === "Enter") {
-        this.submitForm(textEntry);
-      }
-    });
+    start.then((txt) => this.submitForm(txt));
   }
 
   submitForm(textEntry) {
