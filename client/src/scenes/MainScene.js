@@ -53,7 +53,15 @@ export default class MainScene extends Phaser.Scene {
     // handle new players
     currentPlayers.forEach((currentPlayer) => {
       if (!this.players.find((player) => currentPlayer.id === player.id)) {
-        this.players.push(new Player(this, currentPlayer.x, currentPlayer.y, null, { username: currentPlayer.username, id: currentPlayer.id }));
+        const p = new Player(
+          this,
+          currentPlayer.x,
+          currentPlayer.y,
+          null,
+          { username: currentPlayer.username, id: currentPlayer.id }
+        );
+        this.players.push(p);
+        this.physics.add.collider(this.player, p);
       }
     });
 
@@ -116,7 +124,9 @@ export default class MainScene extends Phaser.Scene {
   }
   createPlayers() {
     this.players = this.state.players.map(({x, y, id, username}) => {
-      return new Player(this, x, y, null, { username, id });
+      const p = new Player(this, x, y, null, { username, id });
+      this.physics.add.collider(this.player, p);
+      return p;
     });
     delete this.state.players;
   }

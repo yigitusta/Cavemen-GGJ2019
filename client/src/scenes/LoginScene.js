@@ -19,7 +19,7 @@ export default class LoginScene extends Phaser.Scene {
     // background.setSize(camera.config.width, camera.config.height);
 
     this.add.image(camera.centerX - 335, camera.config.height / 2 - 250, "logo");
-    
+
     // this.add.text(camera.centerX / 2, 200, 'Caveman', {
     //   font: "100px Lobster",
     //   fill: "#fff",
@@ -39,8 +39,8 @@ export default class LoginScene extends Phaser.Scene {
     const text = this.add.text(
       camera.centerX / 2 - 165,
       camera.centerY / 2 + 317,
-      'Play', { 
-        font: '32px Courier', 
+      'Play', {
+        font: '32px Courier',
         fill: '#4a4a4a',
         backgroundColor: "#ffffff",
         padding: {
@@ -51,7 +51,7 @@ export default class LoginScene extends Phaser.Scene {
     );
 
     text.setInteractive();
-    
+
     // button.setInteractive();
     this.input.on('gameobjectdown', (event) => {
       console.log(event);
@@ -67,7 +67,7 @@ export default class LoginScene extends Phaser.Scene {
         textEntry.text = textEntry.text.substr(0, textEntry.text.length - 1);
       } else if (event.keyCode === 8 && textEntry.text.length == 1) {
           textEntry.text = 'Enter your name:';
-      } else if (event.keyCode === 32 || (event.keyCode >= 48 && event.keyCode < 90)) {
+      } else if (event.keyCode === 32 || (event.keyCode >= 48 && event.keyCode <= 90)) {
           textEntry.text += event.key;
       }
 

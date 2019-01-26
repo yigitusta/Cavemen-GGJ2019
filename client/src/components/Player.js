@@ -16,10 +16,10 @@ export default class Player extends Phaser.GameObjects.Container {
       { name: "name" }
     );
     this.add(name);
-    this.setSize(28, 38);
-    scene.physics.world.enable(this);
-    scene.physics.add.collider(this, scene.world);
     scene.add.existing(this);
+    this.setSize(28, 38);
+    scene.physics.add.existing(this, false);
+    scene.physics.add.collider(this, scene.world);
     this.id = id;
   }
   static createAnimations(scene) {
@@ -70,18 +70,34 @@ export default class Player extends Phaser.GameObjects.Container {
 
     if (left) {
       main.anims.play("misa-left-walk", true);
+      this.facing = "left";
     } else if (right) {
       main.anims.play("misa-right-walk", true);
+      this.facing = "right";
     } else if (up) {
       main.anims.play("misa-back-walk", true);
+      this.facing = "up";
     } else if (down) {
       main.anims.play("misa-front-walk", true);
+      this.facing = "down";
     } else {
       main.anims.stop();
-      if (prevVelocity.x < 0) main.setTexture("atlas", "misa-left");
-      else if (prevVelocity.x > 0) main.setTexture("atlas", "misa-right");
-      else if (prevVelocity.y < 0) main.setTexture("atlas", "misa-back");
-      else if (prevVelocity.y > 0) main.setTexture("atlas", "misa-front");
+      if (prevVelocity.x < 0) {
+        main.setTexture("atlas", "misa-left");
+        this.facing = "left";
+      }
+      else if (prevVelocity.x > 0) {
+        main.setTexture("atlas", "misa-right");
+        this.facing = "right";
+      }
+      else if (prevVelocity.y < 0) {
+        main.setTexture("atlas", "misa-back")
+        this.facing = "up";
+      }
+      else if (prevVelocity.y > 0) {
+        main.setTexture("atlas", "misa-front");
+        this.facing = "down";
+      }
     }
   }
 }
