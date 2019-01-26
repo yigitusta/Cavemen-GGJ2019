@@ -8,37 +8,35 @@ import meat from '../assets/images/meat.png';
 
 export default class StatusBar {
 	constructor() {
-    if (document.querySelector('.statusBar')) {
-      document.querySelector('.statusBar').remove();
+    if (document.querySelector('.statusBar') == null) {
+      const statusBar = document.createElement("div");
+      statusBar.classList.add('statusBar');
+      const style = document.createElement("style");
+
+      style.innerHTML = `
+        .statusBar {
+          background-color: rgba(255,255,255,0.6);
+          width: CST.STATUS_BAR.WIDTH;
+          height: CST.STATUS_BAR.HEIGHT;
+          margin: 16px;
+          position: fixed;
+          z-index: 1;
+          top: 20px;
+          left: 20px;
+          padding: 10px 20px;
+          display: flex;
+          align-items:center;
+          justify-content:flex-start;
+          flex-wrap: nowrap;
+        }
+      `;
+
+      this.statusBarStyle = style;
+      this.statusBar = statusBar;
+
+      document.querySelector("head").append(style);
+      document.querySelector("body").appendChild(statusBar);
     }
-
-    const statusBar = document.createElement("div");
-    statusBar.classList.add('statusBar');
-    const style = document.createElement("style");
-
-    style.innerHTML = `
-      .statusBar {
-        background-color: rgba(255,255,255,0.6);
-        width: CST.STATUS_BAR.WIDTH;
-        height: CST.STATUS_BAR.HEIGHT;
-        margin: 16px;
-        position: fixed;
-        z-index: 1;
-        top: 20px;
-        left: 20px;
-        padding: 10px 20px;
-        display: flex;
-        align-items:center;
-        justify-content:flex-start;
-        flex-wrap: nowrap;
-      }
-    `;
-
-    this.statusBarStyle = style;
-    this.statusBar = statusBar;
-
-    document.querySelector("head").append(style);
-    document.querySelector("body").appendChild(statusBar);
   }
 
   createStatusBar({ health = 100, food = 100 }) {
@@ -54,7 +52,12 @@ export default class StatusBar {
     const rect2 = document.createElement("div");
     rect2.classList.add("health-after");
 
+    const text = document.createElement('text');
+    text.classList.add('health-text');
+    text.innerText = `%${health}`;
+
     rect.appendChild(rect2);
+    rect.appendChild(text);
 
     this.statusBarStyle.innerHTML += `
       .statusBar .health {
@@ -74,6 +77,20 @@ export default class StatusBar {
         transition: 200ms ease-out;
         background-color: #e74c3c;
       }
+
+      .statusBar .health-text {
+        color: #fff;
+        font-size:14px;
+        font-weight:bold;
+        position: absolute;
+        left:0;
+        top:0;
+        width: 100%;
+        height: 100%;
+        font-family: 'Arial';
+        text-align: center;
+        line-height: 24px;
+      }
     `;
 
     this.statusBar.appendChild(rect);
@@ -86,6 +103,8 @@ export default class StatusBar {
         width: ${width}px;
       }
     `;
+
+    document.querySelector('.health-text').innerText = `%${health}`;
   }
 
   setFood({ food }) {
