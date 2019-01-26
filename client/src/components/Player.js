@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import CST from '../CST';
 export default class Player extends Phaser.GameObjects.Container {
   constructor(scene, x, y, children, { username, id }) {
     super(scene, x, y, children);
@@ -17,7 +18,7 @@ export default class Player extends Phaser.GameObjects.Container {
     );
     this.add(name);
     scene.add.existing(this);
-    this.setSize(28, 38);
+    this.setSize(CST.PLAYER.WIDTH, CST.PLAYER.HEIGHT);
     scene.physics.add.existing(this, false);
     scene.physics.add.collider(this, scene.world);
     this.id = id;

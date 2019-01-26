@@ -6,7 +6,7 @@ import Player from '../components/Player';
 import CST from '../CST';
 export default class MainScene extends Phaser.Scene {
   constructor() {
-    super({ key:  CST.SCENES.MAIN });
+    super({ key: CST.SCENES.MAIN });
     this.state = {};
   }
   init({ players, player }) {
@@ -28,15 +28,65 @@ export default class MainScene extends Phaser.Scene {
     this.statusBar = new StatusBar(this);
     this.statusBar.createStatusBar({ health: 100, foodNumber: 960 }, this);
 
+    this.input.on('pointerup', this.handleCombat.bind(this));
   }
   update(time, delta) {
     this.updatePlayer();
     this.notifyServer();
   }
+  handleCombat() {
+    let hitPlayer;
+    switch (this.player.facing) {
+      case "left":
+      hitPlayer = this.players.find(p => (
+        p.x < this.player.x &&
+        p.x > this.player.x - 2.5 * (CST.PLAYER.WIDTH / 2) &&
+        p.y < this.player.y + .75 * CST.PLAYER.HEIGHT &&
+        p.y > this.player.y - .75 * CST.PLAYER.HEIGHT
+      ));
+      break;
+      case "right":
+      hitPlayer = this.players.find(p => (
+        p.x < this.player.x + 2.5 * (CST.PLAYER.WIDTH / 2) &&
+        p.x > this.player.x &&
+        p.y < this.player.y + .75 * CST.PLAYER.HEIGHT &&
+        p.y > this.player.y - .75 * CST.PLAYER.HEIGHT
+      ));
+      break;
+      case "up":
+      hitPlayer = this.players.find(p => (
+        p.x < this.player.x + .75 * CST.PLAYER.WIDTH &&
+        p.x > this.player.x - .75 * CST.PLAYER.WIDTH &&
+        p.y < this.player.y &&
+        p.y > this.player.y - 2.5 * (CST.PLAYER.HEIGHT / 2)
+      ));
+      break;
+      case "down":
+      hitPlayer = this.players.find(p => (
+        p.x < this.player.x + .75 * CST.PLAYER.WIDTH &&
+        p.x > this.player.x - .75 * CST.PLAYER.WIDTH &&
+        p.y < this.player.y + 2.5 * (CST.PLAYER.HEIGHT / 2) &&
+        p.y > this.player.y
+      ));
+      break;
+    }
+    if (!!hitPlayer) {
+      speechSynthesis.cancel();
+      speechSynthesis.speak(new SpeechSynthesisUtterance("take that"));
+      console.log(this.player.facing);
+      window.socket.emit('hit', {
+        id: hitPlayer.id,
+        damage: 10
+      });
+    }
+  }
   notifyServer() {
     const socket = window.socket;
-    const {x, y, id} = this.player;
-    socket.emit('update', {x ,y, id});
+    const { x, y, id } = this.player;
+    socket.emit('update', { x, y, id }, ({ health, food }) => {
+      this.player.health = health;
+      this.player.food = food;
+    });
   }
   handlePlayers(players) {
     // current players obtained from server other than the current player
@@ -123,7 +173,7 @@ export default class MainScene extends Phaser.Scene {
     delete this.state.player;
   }
   createPlayers() {
-    this.players = this.state.players.map(({x, y, id, username}) => {
+    this.players = this.state.players.map(({ x, y, id, username }) => {
       const p = new Player(this, x, y, null, { username, id });
       this.physics.add.collider(this.player, p);
       return p;
@@ -154,5 +204,9 @@ export default class MainScene extends Phaser.Scene {
   updatePlayer() {
     const dirs = utils.cursorToDir(this.cursors);
     this.player.move(dirs);
+    if (this.player.health <= 0) {
+      this.scene.start(CST.SCENES.GAME_OVER);
+      window.socket.emit('forceDisconnect');
+    }
   }
 }

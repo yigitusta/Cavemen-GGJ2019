@@ -32,17 +32,33 @@ io.sockets.on('connection', (socket) => {
     players.push(player);
   });
 
-  socket.on('update', (data) => {
+  socket.on('update', (data, callback) => {
     const player = players.find((player) => data.id === player.id);
     if (!!player) {
       const {x, y} = data;
       player.x = x;
       player.y = y;
+      callback({
+        health: player.health,
+        food: player.food
+      });
+    }
+  });
+
+  socket.on('hit', (data) => {
+    const player = players.find((player) => data.id === player.id);
+    if (!!player) {
+      player.health -= data.damage;
     }
   });
 
   socket.on('disconnect', () => {
     players = players.filter(p => p.id !== socket.id);
+  });
+
+  socket.on('forceDisconnect', () => {
+    players = players.filter(p => p.id !== socket.id);
+    socket.disconnect();
   });
 });
 

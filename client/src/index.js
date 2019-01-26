@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import LoadScene from './scenes/LoadScene';
 import MainScene from './scenes/MainScene';
 import LoginScene from './scenes/LoginScene';
+import GameOverScene from './scenes/GameOverScene';
 import { handleWindowResize } from './utils/utils';
 
 const config = {
@@ -18,7 +19,8 @@ const config = {
   scene: [
     LoadScene,
     LoginScene,
-    MainScene
+    MainScene,
+    GameOverScene
   ]
 };
 
