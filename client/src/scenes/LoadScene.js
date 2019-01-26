@@ -26,6 +26,12 @@ export default class LoadScene extends Phaser.Scene {
         this.load.image("gamescreen", gamescreen);
         this.load.audio("start_the_game_already", start_the_game_already_mp3);
 
+
+        this.add.text(this.cameras.main.centerX - 180, this.cameras.main.centerY - 200, "LOADİNG...", {
+            fill: "#fff",
+            font: "80px monospace",
+        });
+
         let loadingBar = this.add.graphics({
             fillStyle: {
                 color: 0xffffff //white
@@ -33,7 +39,7 @@ export default class LoadScene extends Phaser.Scene {
         })
 
         this.load.on("progress", (percent) => {
-            loadingBar.fillRect(50, this.game.renderer.height / 2, this.game.renderer.width * percent, 50);
+            loadingBar.fillRect(0, this.game.renderer.height / 2, this.game.renderer.width * percent, 50);
         })
     }
     create() {
