@@ -26,7 +26,7 @@ export default class MainScene extends Phaser.Scene {
     this.events.on('heartbeat', this.handlePlayers, this);
 
     this.statusBar = new StatusBar(this);
-    this.statusBar.createStatusBar({ health: 100, foodNumber: 960 }, this);
+    this.statusBar.createStatusBar({ health: 100, food: 100 }, this);
 
     this.WASD = utils.getWASD(this);
     this.input.on('pointerup', this.handleCombat.bind(this));
@@ -87,6 +87,7 @@ export default class MainScene extends Phaser.Scene {
     socket.emit('update', { x, y, id }, ({ health, food }) => {
       this.player.health = health;
       this.player.food = food;
+      this.statusBar.setHealth(health);
     });
   }
   handlePlayers(players) {
@@ -154,7 +155,7 @@ export default class MainScene extends Phaser.Scene {
     const above = this.map.createStaticLayer("Above Player", tileset, 0, 0);
 
     world.setCollisionByProperty({ collides: true });
-    above.setDepth(10);
+    above.setDepth(1);
     this.world = world;
   }
   createUI() {

@@ -8,5 +8,9 @@ export default {
   PLAYER: {
     WIDTH: 28,
     HEIGHT: 38
+  },
+  STATUS_BAR: {
+    WIDTH: 340,
+    HEIGHT: 48
   }
 }

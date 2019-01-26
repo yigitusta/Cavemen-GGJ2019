@@ -37,7 +37,7 @@ export function addShape({x, y, width, height, color=0xffffff, stroke=4, alpha=1
       alpha
     },
   });
-  
+
   shape.strokeRect(x, y, width, height)
 }
 
@@ -62,7 +62,7 @@ export function addCircle({ x, y, radius= 50, line, fill,  ctx }) {
 
 /*
 
-    Graphics.addRect({ 
+    Graphics.addRect({
       x: 0,
       y: 0,
       width: this.game.renderer.width,

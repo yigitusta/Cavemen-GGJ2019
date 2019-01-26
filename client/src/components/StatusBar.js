@@ -2,64 +2,53 @@
 import Phaser from 'phaser';
 import * as Graphics from "../utils/graphics";
 
+import CST from '../CST';
 
-export default class StatusBar extends Phaser.GameObjects.Container {
-	constructor(scene) {
-		super(scene);
-    
-    this.statusBar = scene.add.group();
-
-
-    // this.statusBar.setScrollFactor(0);
-    // this.statusBar.setDepth(depth);
-
-    scene.add.existing(this);
-  }
-  
-  // setPriority({ shape, depth }) {
-  //   shape.setScrollFactor(0);
-  //   shape.setDepth(depth);
-  // }
-
-  createStatusBar({ health = 100, foodNumber = 960 }, ctx) {
-    this.createBackground({ width: (health * 2) + 130 }, ctx);
-    this.createHealthBar({ health }, ctx);
-    this.createFood({ x: ((health * 2) + 80), foodNumber }, ctx);
+export default class StatusBar {
+	constructor() {
+    const statusBar = document.createElement("div");
+    statusBar.style = {
+      backgroundColor: "#fff",
+      width: CST.STATUS_BAR.WIDTH,
+      height: CST.STATUS_BAR.HEIGHT,
+      margin: "16px",
+      position: "fixed",
+      zIndex: 1
+    }
+    this.statusBar = statusBar;
+    document.querySelector("body").append(statusBar);
   }
 
-  createBackground({ width }, ctx) {
-    const rect = Graphics.addRect({ x: 20, y: 20, width, height: 40, color: 0xffffff, alpha: 0.9, ctx });
-
-    rect.setScrollFactor(0);
-    rect.setDepth(30);
-    this.statusBar.add(rect);
+  createStatusBar({ health = 100, food = 100 }) {
+    this.createHealthBar(health);
+    this.createFood({ x: ((health * 2) + 80), food });
   }
 
-	createHealthBar({ health }, ctx) {
+	createHealthBar(health) {
     const width = health * 2;
-    const rect = Graphics.addRect({ x: 40, y: 30, width, height: 20, color: 0xe74c3c, ctx });
-
-    rect.setScrollFactor(0);
-    rect.setDepth(30);
-
-    this.statusBar.add(rect);
+    const rect = document.createElement("div");
+    rect.classList.add("health");
+    rect.style = {
+      left: 40,
+      top: 30,
+      width,
+      color: "#e74c3c",
+      position: "relative"
+    };
+    this.statusBar.append(rect);
   };
-  
-  createFood({x, foodNumber= 960 }, ctx) {
-    const img = ctx.add.image(x, 40, "meat");
-    const text = ctx.add.text(x + 20, 30, foodNumber, {
+
+  setHealth(health) {
+    const width = health * 2;
+    this.statusBar.querySelector(".health");
+  }
+
+  createFood({x, food = 100 }, ctx) {
+    /*const img = ctx.add.image(x, 40, "meat");
+    const text = ctx.add.text(x + 20, 30, food, {
       font: '18px monospace',
       fill: '#4a4a4a',
     });
-
-    
-    img.setScrollFactor(0);
-    img.setDepth(30);
-    
-    text.setScrollFactor(0);
-    text.setDepth(30);
-
-    this.statusBar.add(img);
-    this.statusBar.add(text);
+    */
   }
 };
