@@ -90,10 +90,10 @@ export default class MainScene extends Phaser.Scene {
 
       if (this.meats == null) {
         this.meats = meats;
+        this.meatGenerator();
       } else {
-        if (this.meats != meats) {
+        if (this.meats.toString() != meats.toString()) {
           this.meats = meats;
-          this.meatGenerator();
         }
       }
 
