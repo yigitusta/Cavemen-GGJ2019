@@ -56,20 +56,14 @@ io.sockets.on('connection', (socket) => {
     }
   });
 
-  socket.emit('meats', () => {
+  socket.on('meatEating', (data) => {
+    meats = meats.filter(m => m.x !== data.x && m.y !== data.y);
+    const player = players.find((player) => data.id === player.id);
 
+    if (player.food) {
+      player.food = data.food;
+    }
   });
-
-  // socket.on('meatInit', (data, callback) => {
-  //   for (let i=0; i < 50; i++) {
-  //     const x = Math.floor(Math.random() * data.cameraW);
-  //     const y = Math.floor(Math.random() * data.cameraH);
-      
-  //     meats.push({ x, y });
-  //   }
-
-  //   callback(meats)
-  // });
 
   socket.on('disconnect', () => {
     players = players.filter(p => p.id !== socket.id);
@@ -83,7 +77,7 @@ io.sockets.on('connection', (socket) => {
 
 
 setInterval(() => {
-  io.sockets.emit('heartbeat', players);
+  io.sockets.emit('heartbeat', { players, meats });
 }, 33);
 
 

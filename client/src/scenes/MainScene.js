@@ -12,6 +12,7 @@ export default class MainScene extends Phaser.Scene {
   init({ players, player }) {
     this.state.players = players;
     this.state.player = player;
+    this.meatImages = [];
   }
   create() {
     this.createAnimations();
@@ -26,7 +27,7 @@ export default class MainScene extends Phaser.Scene {
     this.events.on('heartbeat', this.handlePlayers, this);
 
     this.statusBar = new StatusBar(this);
-    this.statusBar.createStatusBar({ health: 100, food: 100 }, this);
+    this.statusBar.createStatusBar({ health: 100, food: 10 }, this);
 
     this.WASD = utils.getWASD(this);
     this.input.on('pointerup', this.handleCombat.bind(this));
@@ -84,28 +85,23 @@ export default class MainScene extends Phaser.Scene {
   notifyServer() {
     const socket = window.socket;
     const { x, y, id } = this.player;
-    socket.emit('update', { x, y, id }, ({ health, food, meats }) => {
+    socket.emit('update', { x, y, id }, ({ health, food }) => {
       this.player.health = health;
       this.player.food = food;
 
-      if (this.meats == null) {
-        this.meats = meats;
-        this.meatGenerator();
-      } else {
-        if (this.meats.toString() != meats.toString()) {
-          this.meats = meats;
-        }
-      }
-
       const healthText = document.querySelector('.statusBar .health-text');
-
+      const foodText = document.querySelector('.statusBar .food span');
+      
       if (healthText && healthText.textContent.replace('%','') != health) {
         this.statusBar.setHealth({ health });
       }
-      // this.statusBar.setFood({ food });
+
+      if (foodText && foodText.textContent != food) {
+        this.statusBar.setFood({ food });
+      }
     });
   }
-  handlePlayers(players) {
+  handlePlayers({ players, meats }) {
     // current players obtained from server other than the current player
     const currentPlayers = players.filter(p => p.id !== this.player.id);
 
@@ -163,7 +159,18 @@ export default class MainScene extends Phaser.Scene {
       player.x = currentPlayer.x;
       player.y = currentPlayer.y;
     });
+
+    if (this.meats == null) {
+      this.meats = meats;
+      this.meatGenerator();
+    } else {
+      if (this.meats.toString() != meats.toString()) {
+        this.meats = meats;
+        this.meatGenerator();
+      }
+    }
   }
+  
   createAnimations() {
     Player.createAnimations(this);
   }
@@ -233,8 +240,31 @@ export default class MainScene extends Phaser.Scene {
     }
   }
   meatGenerator() {
+    const player = this.player;
+    const food = parseInt(document.querySelector('.food span').textContent);
+
+    this.meatImages.map((image) => {
+      image.destroy();
+    });
+
     this.meats.map((meat) => {
-      this.add.image(meat.x, meat.y, 'meat');
+
+      const image = this.physics.add.image(meat.x, meat.y, 'meat');
+      image.setCollideWorldBounds(true);
+      this.meatImages.push(image);
+      
+      const id = this.player.id;
+
+      this.physics.add.overlap(image, player, () => {
+        const obj = {
+          x: image.x,
+          y: image.y,
+          id: id,
+          food: food + 1
+        };
+        
+        window.socket.emit('meatEating', obj);
+      }, null, this);
     });
   }
 }
