@@ -36,29 +36,6 @@
          "width":64,
          "x":0,
          "y":0
-        }, 
-        {
-         "draworder":"topdown",
-         "id":4,
-         "name":"Objects",
-         "objects":[
-                {
-                 "height":0,
-                 "id":1,
-                 "name":"Spawn Point",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":994.333333333333,
-                 "y":1170.66666666667
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
         }],
  "nextlayerid":5,
  "nextobjectid":2,
