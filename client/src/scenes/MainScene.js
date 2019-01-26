@@ -29,7 +29,7 @@ export default class MainScene extends Phaser.Scene {
     this.statusBar.createStatusBar({ health: 100, food: 10 }, this);
 
     this.WASD = utils.getWASD(this);
-    this.input.on('pointerup', this.handleCombat.bind(this));
+    // this.input.on('pointerup', this.handleCombat.bind(this));
     this.input.keyboard.on('keyup', this.handleInput.bind(this));
   }
   update(time, delta) {
@@ -165,7 +165,6 @@ export default class MainScene extends Phaser.Scene {
       }
     }
   }
-  
   createAnimations() {
     Player.createAnimations(this);
   }
@@ -251,9 +250,14 @@ export default class MainScene extends Phaser.Scene {
     });
   }
   handleInput(event) {
+    console.log(event);
     if (event.key == 'h') {
       this.spentMeat();
     }
+
+    if (event.keyCode == 32) {
+      this.handleCombat();
+    } 
   }
   spentMeat() {
     const {player} = this;
