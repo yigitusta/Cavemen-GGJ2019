@@ -6,8 +6,18 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>CaveMen</title>
   <style type="text/css">
+    html {
+      font-size: 62.5%;
+    }
+
+    body {
+      font-family: 'Arial';
+    }
+
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
@@ -71,8 +81,50 @@
       padding:0 10px;
     }
 
+    li {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 14rem;
+      margin-bottom: 0.7rem;
+    }
 
+    .hidden {
+      display: none;
+    }
 
+    .online-players {
+      position: fixed;
+      min-width: 16rem;
+      right: 3rem;
+      top: 3rem;
+      background-color: rgba(44, 62, 80, 0.9);
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.6rem;
+      padding: 1rem;
+    }
+    .score-board {
+      margin-bottom: 1.3rem;
+      text-align: center;
+      border-bottom: 1px solid #999;
+    }
+    .online-players > li {
+      margin-top: 0.5rem;
+      font-size: 1.2rem;
+    }
+    .score-meat-img {
+      width: 2rem;
+      height: 2rem;
+    }
+    .score-meat {
+      margin-left: 2rem;
+      margin-right: 0.5rem;
+    }
+    .score-name {
+      width: 500px;
+    }
   </style>
 </head>
 <body>
@@ -81,6 +133,11 @@
     <h6>Write Something..</h6>
     <input type="text" />
     <span class="close">X</span>
+  </div>
+  <div class="online-players hidden">
+    <div class="score-board">Scoreboard</div>
+    <li><span class="score-name">mahmut</span><span class="score-meat">12</span><img class="score-meat-img" src="src/assets/images/meat.png"></li>
+    <li><span class="score-name">suleyman</span><span class="score-meat">14</span><img class="score-meat-img" src="src/assets/images/meat.png"></li>
   </div>
   <script src="./src/index.js"></script>
   <script type="text/javascript">

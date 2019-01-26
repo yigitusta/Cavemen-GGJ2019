@@ -18,11 +18,10 @@ export default class StatusBar {
           background-color: rgba(44, 62, 80, 0.9);
           width: CST.STATUS_BAR.WIDTH;
           height: CST.STATUS_BAR.HEIGHT;
-          margin: 16px;
           position: fixed;
           z-index: 1;
-          top: 20px;
-          left: 20px;
+          top: 30px;
+          left: 30px;
           padding: 10px 20px;
           display: flex;
           align-items:center;
@@ -85,14 +84,13 @@ export default class StatusBar {
 
       .statusBar .health-text {
         color: #fff;
-        font-size:14px;
+        font-size: 1.4rem;
         font-weight:bold;
         position: absolute;
         left:0;
         top:0;
         width: 100%;
         height: 100%;
-        font-family: 'Arial';
         text-align: center;
         line-height: 24px;
       }
