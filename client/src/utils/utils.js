@@ -35,6 +35,13 @@ export function cursorToDir(cursors) {
   };
 }
 
+export function sendWindowSize(callback) {
+  const w = this.sys.game.config.width;
+  const h = this.sys.game.config.height;
+
+  callback({w, h});
+}
+
 export function getWASD(ctx) {
   const W = ctx.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
   const A = ctx.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);

@@ -84,16 +84,25 @@ export default class MainScene extends Phaser.Scene {
   notifyServer() {
     const socket = window.socket;
     const { x, y, id } = this.player;
-    socket.emit('update', { x, y, id }, ({ health, food }) => {
+    socket.emit('update', { x, y, id }, ({ health, food, meats }) => {
       this.player.health = health;
       this.player.food = food;
 
-      const healthText = document.querySelector('.statusBar .health-text');
+      if (this.meats == null) {
+        this.meats = meats;
+      } else {
+        if (this.meats != meats) {
+          this.meats = meats;
+          this.meatGenerator();
+        }
+      }
 
-      if (healthText.textContent.replace('%','') != health) {
+      const healthText = document.querySelector('.statusBar .health-text');
+      
+      if (healthText && healthText.textContent.replace('%','') != health) {
         this.statusBar.setHealth({ health });
       }
-      this.statusBar.setFood({ food });
+      // this.statusBar.setFood({ food });
     });
   }
   handlePlayers(players) {
@@ -221,5 +230,10 @@ export default class MainScene extends Phaser.Scene {
       this.scene.start(CST.SCENES.GAME_OVER);
       window.socket.emit('forceDisconnect');
     }
+  }
+  meatGenerator() {
+    this.meats.map((meat) => {
+      this.add.image(meat.x, meat.y, 'meat');
+    });
   }
 }

@@ -5,8 +5,12 @@ const expressServer = app.listen(process.env.PORT || 3000);
 const io = socketio(expressServer);
 
 const PlayerShape = require('./common/PlayerShape');
+const Utils = require('./common/Utils');
 
 let players = [];
+let meats = [];
+
+meats = meatCreate();
 
 app.use('/', express.static('client/dist'))
 
@@ -40,7 +44,8 @@ io.sockets.on('connection', (socket) => {
       player.y = y;
       callback({
         health: player.health,
-        food: player.food
+        food: player.food,
+        meats
       });
     }
   });
@@ -52,6 +57,21 @@ io.sockets.on('connection', (socket) => {
     }
   });
 
+  socket.emit('meats', () => {
+
+  });
+
+  // socket.on('meatInit', (data, callback) => {
+  //   for (let i=0; i < 50; i++) {
+  //     const x = Math.floor(Math.random() * data.cameraW);
+  //     const y = Math.floor(Math.random() * data.cameraH);
+      
+  //     meats.push({ x, y });
+  //   }
+
+  //   callback(meats)
+  // });
+
   socket.on('disconnect', () => {
     players = players.filter(p => p.id !== socket.id);
   });
@@ -62,6 +82,19 @@ io.sockets.on('connection', (socket) => {
   });
 });
 
+
 setInterval(() => {
   io.sockets.emit('heartbeat', players);
 }, 33);
+
+
+function meatCreate() {
+  for (let i=0; i < 50; i++) {
+    const x = Math.floor(Math.random() * 1000);
+    const y = Math.floor(Math.random() * 1000);
+    
+    meats.push({ x, y });
+  }
+
+  return meats;
+}

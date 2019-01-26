@@ -40,8 +40,13 @@ export default class StatusBar {
   }
 
   createStatusBar({ health = 100, food = 100 }) {
-    this.createHealthBar({ health });
-    this.createFood({ food });
+    if (document.querySelector('.statusBar .health') == null) {
+      this.createHealthBar({ health });
+    }
+
+    if (document.querySelector('.statusBar .food') == null) {
+      this.createFood({ food });
+    }
   }
 
 	createHealthBar({ health }) {
