@@ -5,7 +5,6 @@ const expressServer = app.listen(process.env.PORT || 3000);
 const io = socketio(expressServer);
 
 const PlayerShape = require('./common/PlayerShape');
-const Utils = require('./common/Utils');
 
 let players = [];
 let meats = [];
