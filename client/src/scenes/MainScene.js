@@ -20,7 +20,6 @@ export default class MainScene extends Phaser.Scene {
     this.createPlayer();
     this.createPlayers();
     this.createCamera();
-    this.createUI();
     this.debugGraphics();
     this.cursors = this.input.keyboard.createCursorKeys();
     this.events.on('resize', utils.handleGameResize, this);
@@ -31,6 +30,7 @@ export default class MainScene extends Phaser.Scene {
 
     this.WASD = utils.getWASD(this);
     this.input.on('pointerup', this.handleCombat.bind(this));
+    this.input.keyboard.on('keyup', this.handleInput.bind(this));
   }
   update(time, delta) {
     this.updatePlayer();
@@ -151,11 +151,6 @@ export default class MainScene extends Phaser.Scene {
         player.move({}, 0);
       }
 
-      // const statusbar = new StatusBar();
-      // console.log(currentPlayer);
-      // statusbar.createStatusBar({ health: currentPlayer.health, food: currentPlayer.food });
-      // document.querySelector('.statusBar .health-after').style.width = currentPlayer.width
-
       player.x = currentPlayer.x;
       player.y = currentPlayer.y;
     });
@@ -185,17 +180,7 @@ export default class MainScene extends Phaser.Scene {
     above.setDepth(1);
     this.world = world;
   }
-  createUI() {
-    // const x = this.add
-    //   .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
-    //     font: "18px monospace",
-    //     fill: "#000000",
-    //     padding: { x: 20, y: 10 },
-    //     backgroundColor: "#ffffff"
-    //   })
-    //   .setScrollFactor(0)
-    //   .setDepth(30);
-  }
+
   createPlayer() {
     const { x, y, id, username } = this.state.player;
     this.player = new Player(this, x, y, null, { username, id });
@@ -241,21 +226,19 @@ export default class MainScene extends Phaser.Scene {
   }
   meatGenerator() {
     const player = this.player;
-    const food = parseInt(document.querySelector('.food span').textContent);
 
     this.meatImages.map((image) => {
       image.destroy();
     });
 
     this.meats.map((meat) => {
-
       const image = this.physics.add.image(meat.x, meat.y, 'meat');
       image.setCollideWorldBounds(true);
       this.meatImages.push(image);
       
       const id = this.player.id;
-
       this.physics.add.overlap(image, player, () => {
+        const food = parseInt(document.querySelector('.food span').textContent);
         const obj = {
           x: image.x,
           y: image.y,
@@ -266,5 +249,25 @@ export default class MainScene extends Phaser.Scene {
         window.socket.emit('meatEating', obj);
       }, null, this);
     });
+  }
+  handleInput(event) {
+    if (event.key == 'h') {
+      this.spentMeat();
+    }
+  }
+  spentMeat() {
+    const {player} = this;
+    const health = player.health;
+    const food = player.food;
+
+    if (health <= 95 && food >= 5) {
+      const obj = {
+        id: player.id,
+        food: food - 5,
+        health: health + 10
+      };
+
+      window.socket.emit('foodSpending', obj);
+    }
   }
 }

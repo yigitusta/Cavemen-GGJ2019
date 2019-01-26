@@ -57,6 +57,7 @@ io.sockets.on('connection', (socket) => {
   });
 
   socket.on('meatEating', (data) => {
+    console.log("MeatEating: ", data);
     meats = meats.filter(m => m.x !== data.x && m.y !== data.y);
     const player = players.find((player) => data.id === player.id);
 
@@ -64,6 +65,16 @@ io.sockets.on('connection', (socket) => {
       player.food = data.food;
     }
   });
+
+  socket.on('foodSpending', (data) => {
+    console.log("Food:" , data);
+    const player = players.find((player) => data.id === player.id);
+
+    if (player) {
+      player.food = data.food;
+      player.health = data.health;
+    }
+  })
 
   socket.on('disconnect', () => {
     players = players.filter(p => p.id !== socket.id);
