@@ -43,8 +43,7 @@ io.sockets.on('connection', (socket) => {
       player.y = y;
       callback({
         health: player.health,
-        food: player.food,
-        meats
+        food: player.food
       });
     }
   });
@@ -60,7 +59,7 @@ io.sockets.on('connection', (socket) => {
     meats = meats.filter(m => m.x !== data.x && m.y !== data.y);
     const player = players.find((player) => data.id === player.id);
 
-    if (player.food) {
+    if (player) {
       player.food = data.food;
     }
   });

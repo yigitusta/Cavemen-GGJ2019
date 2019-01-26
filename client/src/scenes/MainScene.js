@@ -85,6 +85,7 @@ export default class MainScene extends Phaser.Scene {
   notifyServer() {
     const socket = window.socket;
     const { x, y, id } = this.player;
+
     socket.emit('update', { x, y, id }, ({ health, food }) => {
       this.player.health = health;
       this.player.food = food;
@@ -244,7 +245,8 @@ export default class MainScene extends Phaser.Scene {
           id: id,
           food: food + 1
         };
-        
+        console.log(obj);
+        image.destroy();
         window.socket.emit('meatEating', obj);
       }, null, this);
     });
