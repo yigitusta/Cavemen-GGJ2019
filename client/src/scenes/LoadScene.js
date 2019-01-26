@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
-import tiles from  '../assets/tiles/tuxemon-tileset.png';
-import tilemap from '../assets/tiles/tuxemon-map.json';
+import tiles from  '../assets/tiles/cavemen_tileset.png';
+import tilemap from '../assets/tiles/cavemen_map.json';
 import atlasImg from '../assets/atlas/atlas.png';
 import atlasJson from '../assets/atlas/atlas.json';
 import CST from '../CST';

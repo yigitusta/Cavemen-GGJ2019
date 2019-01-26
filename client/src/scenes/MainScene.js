@@ -98,7 +98,7 @@ export default class MainScene extends Phaser.Scene {
       }
 
       const healthText = document.querySelector('.statusBar .health-text');
-      
+
       if (healthText && healthText.textContent.replace('%','') != health) {
         this.statusBar.setHealth({ health });
       }
@@ -169,7 +169,7 @@ export default class MainScene extends Phaser.Scene {
   }
   createMap() {
     this.map = this.make.tilemap({ key: "map" });
-    const tileset = this.map.addTilesetImage("tuxmon-sample-32px-extruded", "tiles");
+    const tileset = this.map.addTilesetImage("cavemen_tileset", "tiles");
     const below = this.map.createStaticLayer("Below Player", tileset, 0, 0);
     const world = this.map.createStaticLayer("World", tileset, 0, 0);
     const above = this.map.createStaticLayer("Above Player", tileset, 0, 0);
