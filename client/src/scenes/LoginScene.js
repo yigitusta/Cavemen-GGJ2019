@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import io from 'socket.io-client';
+import * as utils from '../utils/utils';
 import * as Graphics from '../utils/graphics';
-import { drawChatbox } from '../components/Graphics';
 
 import PlayerShape from '../../../common/PlayerShape';
 import CST from '../CST';
@@ -14,7 +14,6 @@ export default class LoginScene extends Phaser.Scene {
 
   }
   create() {
-    this.sound.add("start_the_game_already").play();
     const camera = this.cameras.main;
 
     const background = this.add.image(0,0, "gamescreen");
@@ -75,6 +74,7 @@ export default class LoginScene extends Phaser.Scene {
     });
 
     start.then((txt) => this.submitForm(txt));
+    this.events.on('resize', utils.handleGameResize, this);
   }
 
   submitForm(text) {
