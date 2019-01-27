@@ -10,6 +10,7 @@ import gamescreen from '../assets/images/splash.png';
 import logo from '../assets/images/logo.png';
 
 import start_the_game_already_mp3 from '../assets/audio/start_the_game.mp3';
+import ooh_ogg from '../assets/audio/ooh.ogg';
 export default class LoadScene extends Phaser.Scene {
     constructor() {
         super({ key: CST.SCENES.LOAD });
@@ -25,7 +26,7 @@ export default class LoadScene extends Phaser.Scene {
         this.load.image("logo", logo);
         this.load.image("gamescreen", gamescreen);
         this.load.audio("start_the_game_already", start_the_game_already_mp3);
-
+        this.load.audio("ooh", ooh_ogg);
 
         this.add.text(this.cameras.main.centerX - 180, this.cameras.main.centerY - 200, "LOADİNG...", {
             fill: "#fff",

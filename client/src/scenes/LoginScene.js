@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import io from 'socket.io-client';
+import * as utils from '../utils/utils';
 import * as Graphics from '../utils/graphics';
 
 import PlayerShape from '../../../common/PlayerShape';
@@ -73,6 +74,7 @@ export default class LoginScene extends Phaser.Scene {
     });
 
     start.then((txt) => this.submitForm(txt));
+    this.events.on('resize', utils.handleGameResize, this);
   }
 
   submitForm(text) {

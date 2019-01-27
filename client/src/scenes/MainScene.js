@@ -17,6 +17,7 @@ export default class MainScene extends Phaser.Scene {
   }
   create() {
     this.start_the_game_sound = this.sound.add("start_the_game_already");
+    this.ooh_sound = this.sound.add("ooh");
     this.handleMessaging();
     this.createAnimations();
     this.createMap();
@@ -47,6 +48,9 @@ export default class MainScene extends Phaser.Scene {
       p.addMessageBox(data.message);
       if (data.message === "14") {
         this.start_the_game_sound.play();
+      }
+      if (data.message === "9") {
+        this.ooh_sound.play();
       }
     });
   }
@@ -383,6 +387,9 @@ export default class MainScene extends Phaser.Scene {
         this.player.addMessageBox(entry.value);
         if (entry.value === "14") {
           this.start_the_game_sound.play();
+        }
+        if (entry.value === "9") {
+          this.ooh_sound.play();
         }
         window.socket.emit('message', {
           x: this.player.x,
