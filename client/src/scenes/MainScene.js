@@ -71,6 +71,7 @@ export default class MainScene extends Phaser.Scene {
       if (data.period == 'night') {
         document.querySelector('#day-background').className = '';
         document.querySelector('#day-background').classList.add('active');
+        document.querySelector('.online-players').classList.add('night');
 
         const res = this.isInsideCave();
 
@@ -82,6 +83,7 @@ export default class MainScene extends Phaser.Scene {
 
       } else {
         document.querySelector('#day-background').className = '';
+        document.querySelector('.online-players').classList.remove('night');
       }
 
       dayBar.querySelector('span').innerText = data.number;
@@ -327,6 +329,7 @@ export default class MainScene extends Phaser.Scene {
     this.player.move(dirs);
     if (this.player.health <= 0) {
       this.scene.start(CST.SCENES.GAME_OVER);
+      document.querySelector('#day-bar').classList.add('hidden');
       this.statusBar.destroy();
       Scoreboard.close();
       window.socket.emit('forceDisconnect');

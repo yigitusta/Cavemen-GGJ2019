@@ -20,7 +20,7 @@ export default class StatusBar {
           height: CST.STATUS_BAR.HEIGHT;
           position: fixed;
           z-index: 1;
-          top: 30px;
+          top: 15px;
           left: 30px;
           padding: 10px 20px;
           display: flex;
@@ -28,6 +28,17 @@ export default class StatusBar {
           justify-content:flex-start;
           flex-wrap: nowrap;
           border-radius: 3px;
+          animation: 200ms ease-out forwards anim;
+        }
+
+        @keyframes anim {
+          0% {
+            transform: scale(0);
+          }
+
+          100% {
+            transform: scale(1);
+          }
         }
       `;
 
