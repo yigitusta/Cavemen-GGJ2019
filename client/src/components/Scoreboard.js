@@ -37,6 +37,7 @@ export function addPlayer({id, food, username}) {
   li.appendChild(score);
   const meatImg = document.createElement("img");
   meatImg.setAttribute("src", meat);
+  meatImg.setAttribute("class", "score-meat-img");
   li.appendChild(meatImg);
   list.appendChild(li);
 }

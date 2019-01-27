@@ -19,6 +19,7 @@ export default class MainScene extends Phaser.Scene {
     this.start_the_game_sound = this.sound.add("start_the_game_already");
     this.ooh_sound = this.sound.add("ooh");
     this.handleMessaging();
+    this.handleNewmeat();
     this.createAnimations();
     this.createMap();
     this.createUI();
@@ -41,6 +42,20 @@ export default class MainScene extends Phaser.Scene {
   update(time, delta) {
     this.updatePlayer();
     this.notifyServer();
+  }
+  handleNewmeat() {
+    window.socket.on('new-meat', data => {
+      const meatCount = data.food;
+      for (let i = 0; i < meatCount; i++) {
+        let dx = (Math.random() * 10);
+        dx *= Math.floor(Math.random() * 2) === 1 ? 1 : -1;
+        let dy = (Math.random() * 10);
+        dy *= Math.floor(Math.random() * 2) === 1 ? 1 : -1;
+        const x = data.x + dx;
+        const y = data.y + dy;
+        this.createMeat({x, y});
+      }
+    });
   }
   handleMessaging() {
     window.socket.on('message', data => {
@@ -340,8 +355,6 @@ export default class MainScene extends Phaser.Scene {
     }
   }
   meatGenerator() {
-    const player = this.player;
-
     this.meatImages.map((image) => {
       image.destroy();
     });
@@ -349,24 +362,28 @@ export default class MainScene extends Phaser.Scene {
     this.cameras.main.setCollideWorldBounds = false;
 
     this.meats.map((meat) => {
-      const image = this.physics.add.image(meat.x, meat.y, 'meat');
-      image.body.collideWorldBounds = false;
-      this.meatImages.push(image);
-
-      const id = this.player.id;
-      this.physics.add.overlap(image, player, () => {
-        const food = parseInt(document.querySelector('.food span').textContent);
-        const obj = {
-          x: image.x,
-          y: image.y,
-          id: id,
-          food: food + 1
-        };
-
-        image.destroy();
-        window.socket.emit('meatEating', obj);
-      }, null, this);
+      this.createMeat(meat);
     });
+  }
+  createMeat(meat) {
+    const player = this.player;
+    const image = this.physics.add.image(meat.x, meat.y, 'meat');
+    image.body.collideWorldBounds = false;
+    this.meatImages.push(image);
+
+    const id = this.player.id;
+    this.physics.add.overlap(image, player, () => {
+      const food = parseInt(document.querySelector('.food span').textContent);
+      const obj = {
+        x: image.x,
+        y: image.y,
+        id: id,
+        food: food + 1
+      };
+
+      image.destroy();
+      window.socket.emit('meatEating', obj);
+    }, null, this);
   }
   handleInput(event) {
     if (event.keyCode == 9) {

@@ -87,11 +87,18 @@ io.sockets.on('connection', (socket) => {
 
 
   socket.on('disconnect', () => {
+    const disconnectedPlayer = players.find((player) => socket.id === player.id);
     players = players.filter(p => p.id !== socket.id);
+    if (disconnectedPlayer) {
+      socket.broadcast.emit('new-meat', {
+        x: disconnectedPlayer.x,
+        y: disconnectedPlayer.y,
+        food: disconnectedPlayer.food
+      });
+    }
   });
 
   socket.on('forceDisconnect', () => {
-    players = players.filter(p => p.id !== socket.id);
     socket.disconnect();
   });
 
