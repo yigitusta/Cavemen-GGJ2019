@@ -325,6 +325,7 @@ export default class MainScene extends Phaser.Scene {
     this.player.move(dirs);
     if (this.player.health <= 0) {
       this.scene.start(CST.SCENES.GAME_OVER);
+      document.querySelector('#day-bar').classList.add('hidden');
       this.statusBar.destroy();
       Scoreboard.close();
       window.socket.emit('forceDisconnect');
