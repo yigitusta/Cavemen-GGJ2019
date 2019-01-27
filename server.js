@@ -8,6 +8,10 @@ const PlayerShape = require('./common/PlayerShape');
 
 let players = [];
 let meats = [];
+const day = {
+  number: 180,
+  period: 'morning'
+};
 
 meats = meatCreate();
 
@@ -73,6 +77,15 @@ io.sockets.on('connection', (socket) => {
     }
   })
 
+  socket.on('healthExtract', (data) => {
+    const player = players.find((player) => data.id === player.id);
+
+    if (player) {
+      player.health = data.health;
+    }
+  })
+
+
   socket.on('disconnect', () => {
     players = players.filter(p => p.id !== socket.id);
   });
@@ -82,6 +95,23 @@ io.sockets.on('connection', (socket) => {
     socket.disconnect();
   });
 });
+
+
+setInterval(() => {
+  if (day.number == 0) {
+    if (day.period == 'morning') {
+      day.period = 'night';
+      day.number = 60;
+    } else {
+      day.period = 'morning';
+      day.number = 180;
+    }
+  } else {
+    day.number--;
+  }
+
+  io.sockets.emit('dayCycle', day);
+}, 1000);
 
 
 setInterval(() => {

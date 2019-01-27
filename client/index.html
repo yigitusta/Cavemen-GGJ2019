@@ -138,11 +138,73 @@
     .score-name {
       width: 500px;
     }
+
+    #day-bar {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 150px;
+      margin-left: -75px;
+      background: rgba(44, 62, 80, 0.9);
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      padding: 5px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    #day-bar img {
+      display: none;
+      width: 40px;
+      margin-right: 20px;
+    }
+
+    #day-bar.morning .morning {
+      display: block;
+    }
+
+    #day-bar.night {
+      background-color: #c0392b;
+    }
+
+    #day-bar.night .night {
+      display: block;
+    }
+
+    #day-bar span {
+      color: #fff;
+      font-weight: bold;
+      font-size:22px;
+    }
+
+    #day-background {
+      background-color: rgba(44, 62, 80, 0.4);
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      left:0;
+      top:0;
+      opacity: 0;
+      transition: 500ms ease-out;
+      pointer-events: none;
+    }
+
+    #day-background.active {
+      opacity: 1;
+    }
   </style>
 </head>
 
 <body>
-  <div id="game-container" class="game-container"></div>
+  <div id="game-container" class="game-container">
+    <div id="day-background"></div>
+    <div id="day-bar" class="morning">
+      <img class="morning" src="./src/assets/images/morning.png" alt="">
+      <img class="night" src="./src/assets/images/night.png" alt="">
+      <span></span>
+    </div>
+  </div>
   <div id="chat-app">
     <h6>Write Something..</h6>
     <input type="text" />

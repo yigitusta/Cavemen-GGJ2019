@@ -31,6 +31,8 @@ export default class MainScene extends Phaser.Scene {
     this.WASD = utils.getWASD(this);
     // this.input.on('pointerup', this.handleCombat.bind(this));
     this.input.keyboard.on('keyup', this.handleInput.bind(this));
+    this.handleTopDayBar();
+  
   }
   update(time, delta) {
     this.updatePlayer();
@@ -41,6 +43,74 @@ export default class MainScene extends Phaser.Scene {
     this.statusBar.createStatusBar({ health: 100, food: 10 }, this);
     Scoreboard.open();
   }
+  handleTopDayBar() {
+    const socket = window.socket;
+    const dayBar = document.querySelector('#day-bar');
+
+    socket.on('dayCycle', (data) => {
+    let { health, id } = this.player;
+      window.day = data;
+
+      if (!dayBar.classList.contains(data.period)) {
+        dayBar.className = '';
+        dayBar.classList.add(data.period);
+      }
+
+      if (data.period == 'night') {
+        document.querySelector('#day-background').className = '';
+        document.querySelector('#day-background').classList.add('active');
+        
+        const res = this.isInsideCave();
+
+        if (res == false) {
+          health = Math.floor(health - 1.6);
+        }
+        
+        socket.emit('healthExtract', {id, health});
+
+      } else {
+        document.querySelector('#day-background').className = '';
+      }
+    
+      dayBar.querySelector('span').innerText = data.number;
+    });
+  }
+
+  isInsideCave() {
+    const { x, y, id } = this.player;
+    let currentCaveIndex = null;
+    const cave = [
+      {
+        x: 590,
+        y: 835
+      },
+      {
+        x: 1850,
+        y: 467
+      },
+      {
+        x: 1554,
+        y: 790
+      },
+      {
+        x: 1137,
+        y: 1715
+      }
+    ];
+
+    cave.map((c, index) => {
+      if ((Math.abs(c.x-x) <= 58) && (Math.abs(c.y-y) <= 58 )) {
+        currentCaveIndex = index;
+      }
+    })
+
+    if (currentCaveIndex != null) {
+      return cave[currentCaveIndex];
+    }
+
+    return false;
+  }
+
   handleCombat() {
     let hitPlayer;
     switch (this.player.facing) {
