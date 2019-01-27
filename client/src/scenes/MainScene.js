@@ -86,7 +86,7 @@ export default class MainScene extends Phaser.Scene {
         const res = this.isInsideCave();
 
         if (res == false) {
-          health = Math.floor(health - 1.6);
+          health = Math.floor(health - 3.2);
         }
 
         socket.emit('healthExtract', {id, health});
@@ -337,7 +337,7 @@ export default class MainScene extends Phaser.Scene {
   updatePlayer() {
     const dirs = this.WASD && this.WASD();
     this.player.move(dirs);
-    if (this.player.health <= 0) {
+    if (this.player.health && this.player.health <= 0) {
       this.scene.start(CST.SCENES.GAME_OVER);
       document.querySelector('#day-bar').classList.add('hidden');
       this.statusBar.destroy();
