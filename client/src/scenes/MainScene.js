@@ -41,8 +41,9 @@ export default class MainScene extends Phaser.Scene {
     this.notifyServer();
   }
   handleMessaging() {
-    window.socket.on('message', message => {
-      console.log(message);
+    window.socket.on('message', data => {
+      const p = this.players.find(e => e.id === data.id );
+      p.addMessageBox(data.message);
     });
   }
   createUI() {
@@ -372,6 +373,7 @@ export default class MainScene extends Phaser.Scene {
 
     if (window.conversationBoxOpened) {
       if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER) {
+        this.player.addMessageBox(entry.value);
         window.socket.emit('message', {
           x: this.player.x,
           y: this.player.y,

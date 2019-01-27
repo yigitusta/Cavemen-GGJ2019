@@ -104,4 +104,23 @@ export default class Player extends Phaser.GameObjects.Container {
       }
     }
   }
+
+  addMessageBox(data) {
+    const message = Object.assign(
+      this.scene.add.text(-26, -100, data, {
+        font: "12px monospace",
+        fill: "#ffffff",
+        backgroundColor: "rgba(22, 160, 133, 0.8)",
+        padding: { x: 20, y: 15 },
+        wordWrap: { width: 250, useAdvancedWrap: true }
+      }),
+      { name: "message" }
+    );
+
+    this.add(message);
+
+    setTimeout(() => {
+      message.destroy();
+    }, 10000);
+  }
 }
