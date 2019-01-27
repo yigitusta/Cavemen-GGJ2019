@@ -79,14 +79,15 @@ export default class MainScene extends Phaser.Scene {
 
   isInsideCave() {
     const { x, y, id } = this.player;
+
     let currentCaveIndex = null;
     const cave = [
       {
         x: 590,
-        y: 835
+        y: 855
       },
       {
-        x: 1850,
+        x: 1855,
         y: 467
       },
       {
@@ -96,11 +97,15 @@ export default class MainScene extends Phaser.Scene {
       {
         x: 1137,
         y: 1715
+      },
+      {
+        x: 1342,
+        y: 1719
       }
     ];
 
     cave.map((c, index) => {
-      if ((Math.abs(c.x-x) <= 58) && (Math.abs(c.y-y) <= 58 )) {
+      if ((Math.abs(c.x-x) <= 85) && (Math.abs(c.y-y) <= 85 )) {
         currentCaveIndex = index;
       }
     })
@@ -108,7 +113,7 @@ export default class MainScene extends Phaser.Scene {
     if (currentCaveIndex != null) {
       return cave[currentCaveIndex];
     }
-
+  
     return false;
   }
 
@@ -161,7 +166,7 @@ export default class MainScene extends Phaser.Scene {
   notifyServer() {
     const socket = window.socket;
     const { x, y, id } = this.player;
-
+console.log("X: ", x, "Y: ", y);
     socket.emit('update', { x, y, id }, ({ health, food }) => {
       this.player.health = health;
       this.player.food = food;
