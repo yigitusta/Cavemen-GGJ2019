@@ -121,8 +121,8 @@ setInterval(() => {
 
 function meatCreate() {
   for (let i=0; i < 50; i++) {
-    const x = Math.floor(Math.random() * 1000);
-    const y = Math.floor(Math.random() * 1000);
+    const x = Math.floor(Math.random() * 2000);
+    const y = Math.floor(Math.random() * 2000);
     
     meats.push({ x, y });
   }

@@ -2,11 +2,11 @@ import Phaser from 'phaser';
 
 import tiles from  '../assets/tiles/cavemen_tileset.png';
 import tilemap from '../assets/tiles/cavemen_map.json';
-import atlasImg from '../assets/atlas/cavemen_sprites.png';
+import atlasImg from '../assets/atlas/atlas.png';
 import atlasJson from '../assets/atlas/atlas.json';
 import CST from '../CST';
 import meat from '../assets/images/meat.png';
-import gamescreen from '../assets/images/gamescreen.png';
+import gamescreen from '../assets/images/splash.png';
 import logo from '../assets/images/logo.png';
 
 import start_the_game_already_mp3 from '../assets/audio/start_the_game.mp3';

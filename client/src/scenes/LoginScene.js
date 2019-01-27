@@ -17,35 +17,31 @@ export default class LoginScene extends Phaser.Scene {
     const camera = this.cameras.main;
 
     const background = this.add.image(0,0, "gamescreen");
-    // background.setSize(camera.config.width, camera.config.height);
+    background.setScale(2.5,2.5);
 
-    this.add.image(camera.centerX - 335, camera.config.height / 2 - 250, "logo");
 
-    // this.add.text(camera.centerX / 2, 200, 'Caveman', {
-    //   font: "100px Lobster",
-    //   fill: "#fff",
-    // });
+    this.add.image(camera.centerX, camera.centerY- 250, "logo");
 
     Graphics.addLine({
-      x: camera.centerX / 2 - 165,
+      x: camera.centerX - 320,
       y: camera.centerY / 2 + 260,
-      x2: camera.centerX / 2 + 450,
+      x2: camera.centerX + 350,
       y2: camera.centerY / 2 + 260,
       color: 0xFFFFFF,
       stroke: 4,
       ctx: this
     });
 
-    const textEntry = this.add.text(camera.centerX / 2 - 165, camera.centerY / 2 + 200, 'Enter your name', { font: '32px Courier', fill: '#ffffff' });
+    const textEntry = this.add.text(camera.centerX - 320, camera.centerY / 2 + 200, 'Enter your name', { font: '32px Courier', fill: '#ffffff' });
     const text = this.add.text(
-      camera.centerX / 2 - 165,
+      camera.centerX - 320,
       camera.centerY / 2 + 317,
       'Play', {
         font: '32px Courier',
         fill: '#4a4a4a',
         backgroundColor: "#ffffff",
         padding: {
-          x: 260,
+          x: 295,
           y: 10
         }
       }

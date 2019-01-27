@@ -330,6 +330,8 @@ console.log("X: ", x, "Y: ", y);
     this.meatImages.map((image) => {
       image.destroy();
     });
+    // this.world.setBounds(0,0, 2000, 2000);
+    this.cameras.main.setCollideWorldBounds = false;
 
     this.meats.map((meat) => {
       const image = this.physics.add.image(meat.x, meat.y, 'meat');
@@ -352,12 +354,13 @@ console.log("X: ", x, "Y: ", y);
     });
   }
   handleInput(event) {
+    console.log(event.keyCode);
     if (event.keyCode == 9) {
       return;
     }
     
     let entry = window.chat.querySelector("input[type='text']");
-    if (event.key == 't') {
+    if (event.keyCode == 84) {
       if (!window.conversationBoxOpened) {
         this.handleConversationBox();
         window.conversationBoxOpened = true;
