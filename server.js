@@ -9,7 +9,7 @@ const PlayerShape = require('./common/PlayerShape');
 let players = [];
 let meats = [];
 const day = {
-  number: 5,
+  number: 120,
   period: 'morning'
 };
 
@@ -112,7 +112,7 @@ setInterval(() => {
       day.number = 60;
     } else {
       day.period = 'morning';
-      day.number = 5;
+      day.number = 120;
     }
   } else {
     day.number--;
