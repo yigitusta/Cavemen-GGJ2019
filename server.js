@@ -94,6 +94,14 @@ io.sockets.on('connection', (socket) => {
     players = players.filter(p => p.id !== socket.id);
     socket.disconnect();
   });
+
+  socket.on('message', ({x, y, message}) => {
+    socket.broadcast.emit('message',
+    {
+      id: socket.id,
+      x, y, message
+    });
+  });
 });
 
 
@@ -123,7 +131,7 @@ function meatCreate() {
   for (let i=0; i < 50; i++) {
     const x = Math.floor(Math.random() * 2000);
     const y = Math.floor(Math.random() * 2000);
-    
+
     meats.push({ x, y });
   }
 

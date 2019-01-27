@@ -16,6 +16,7 @@ export default class MainScene extends Phaser.Scene {
     this.meatImages = [];
   }
   create() {
+    this.handleMessaging();
     this.createAnimations();
     this.createMap();
     this.createUI();
@@ -38,6 +39,11 @@ export default class MainScene extends Phaser.Scene {
   update(time, delta) {
     this.updatePlayer();
     this.notifyServer();
+  }
+  handleMessaging() {
+    window.socket.on('message', message => {
+      console.log(message);
+    });
   }
   createUI() {
     this.statusBar = new StatusBar(this);
@@ -245,7 +251,6 @@ export default class MainScene extends Phaser.Scene {
       player.y = currentPlayer.y;
 
       if (currentPlayer.food !== player.food) {
-        console.log("scoreboard update other players");
         Scoreboard.updatePlayer({ id: currentPlayer.id, food: currentPlayer.food });
         player.food = currentPlayer.food;
       }
@@ -352,7 +357,6 @@ export default class MainScene extends Phaser.Scene {
     });
   }
   handleInput(event) {
-    console.log(event.keyCode);
     if (event.keyCode == 9) {
       return;
     }
@@ -368,7 +372,11 @@ export default class MainScene extends Phaser.Scene {
 
     if (window.conversationBoxOpened) {
       if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER) {
-        console.log(entry.value);
+        window.socket.emit('message', {
+          x: this.player.x,
+          y: this.player.y,
+          message: entry.value
+        });
         window.chat.classList.add('remove');
         window.chat.classList.remove('active');
         entry.value = '';
