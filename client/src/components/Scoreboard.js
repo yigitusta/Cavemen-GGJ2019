@@ -2,6 +2,8 @@ import meat from '../assets/images/meat.png';
 
 const scoreBoard = document.querySelector(".online-players");
 
+const list = scoreBoard.querySelector("ul");
+
 export function close() {
   scoreBoard.classList.add("hidden");
 }
@@ -36,9 +38,21 @@ export function addPlayer({id, food, username}) {
   const meatImg = document.createElement("img");
   meatImg.setAttribute("src", meat);
   li.appendChild(meatImg);
-  scoreBoard.querySelector("ul").appendChild(li);
+  list.appendChild(li);
 }
 
-export function sort() {
+export function startSorting() {
+  setInterval(() => {
+    const els = Array.from(list.children);
 
+    els.sort((a, b) => {
+      const scoreA = parseInt(a.querySelector(".score-meat").innerText);
+      const scoreB = parseInt(b.querySelector(".score-meat").innerText);
+      if (scoreA === scoreB) return 0;
+      else if (scoreA > scoreB) return -1;
+      else return 1;
+    });
+
+    els.forEach(el => list.appendChild(el));
+  }, 2000)
 }

@@ -33,6 +33,7 @@ export default class MainScene extends Phaser.Scene {
     this.input.keyboard.on('keyup', this.handleInput.bind(this));
     this.handleTopDayBar();
   
+    Scoreboard.startSorting();
   }
   update(time, delta) {
     this.updatePlayer();
@@ -174,7 +175,6 @@ export default class MainScene extends Phaser.Scene {
 
       if (foodText && foodText.textContent != food) {
         this.statusBar.setFood({ food });
-        console.log("scoreboard update main player");
         Scoreboard.updatePlayer({
           id: this.player.id,
           food: this.player.food
