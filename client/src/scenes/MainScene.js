@@ -295,6 +295,7 @@ export default class MainScene extends Phaser.Scene {
     world.setCollisionByProperty({ collides: true });
     above.setDepth(1);
     this.world = world;
+    this.above = above;
   }
 
   createPlayer() {
@@ -341,6 +342,9 @@ export default class MainScene extends Phaser.Scene {
     });
   }
   createMeat(meat) {
+    if (this.above.hasTileAtWorldXY(meat.x, meat.y) || this.world.hasTileAtWorldXY(meat.x, meat.y)) {
+      return;
+    }
     const player = this.player;
     const image = this.physics.add.image(meat.x, meat.y, 'meat');
     image.body.collideWorldBounds = false;
