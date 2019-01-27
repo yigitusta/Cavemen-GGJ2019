@@ -342,7 +342,7 @@ export default class MainScene extends Phaser.Scene {
 
     this.meats.map((meat) => {
       const image = this.physics.add.image(meat.x, meat.y, 'meat');
-      image.setCollideWorldBounds(true);
+      image.body.collideWorldBounds = false;
       this.meatImages.push(image);
 
       const id = this.player.id;

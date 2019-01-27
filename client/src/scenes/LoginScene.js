@@ -63,7 +63,7 @@ export default class LoginScene extends Phaser.Scene {
         if (event.keyCode === 8 && textEntry.text.length > 1) {
           textEntry.text = textEntry.text.substr(0, textEntry.text.length - 1);
         } else if (event.keyCode === 8 && textEntry.text.length == 1) {
-            textEntry.text = 'Enter your name:';
+            textEntry.text = 'Enter your name';
         } else if (event.keyCode === 32 || (event.keyCode >= 48 && event.keyCode <= 90)) {
             textEntry.text += event.key;
         }
