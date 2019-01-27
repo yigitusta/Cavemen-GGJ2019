@@ -14,8 +14,7 @@ export default class LoginScene extends Phaser.Scene {
 
   }
   create() {
-    drawChatbox(this);
-    // this.sound.add("start_the_game_already").play();
+    this.sound.add("start_the_game_already").play();
     const camera = this.cameras.main;
 
     const background = this.add.image(0,0, "gamescreen");

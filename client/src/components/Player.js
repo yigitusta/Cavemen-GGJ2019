@@ -121,6 +121,6 @@ export default class Player extends Phaser.GameObjects.Container {
 
     setTimeout(() => {
       message.destroy();
-    }, 10000);
+    }, 3000);
   }
 }
