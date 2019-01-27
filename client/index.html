@@ -40,13 +40,19 @@
       background: rgba(44, 62, 80, 0.9);
       padding: 20px 25px;
       margin-left: -350px;
-      transition: 300ms ease-out;
-      transform: translateY(150px);
+      transition: 200ms ease-out;
+      transform: translateY(150px) scale(0.5);
+    }
+
+    #chat-app input {
       display: none;
     }
 
     #chat-app.active {
-      transform: translateY(0px);
+      transform: translateY(0px) scale(1);
+    }
+
+    #chat-app.active input {
       display: block;
     }
 
@@ -96,21 +102,27 @@
       margin-right: 0.7rem;
     }
 
-    .hidden {
-      display: none;
-    }
-
     .online-players {
       position: fixed;
       min-width: 16rem;
       right: 3rem;
-      top: 3rem;
+      top: 15px;
       background-color: rgba(44, 62, 80, 0.9);
       color: #fff;
       font-weight: bold;
       font-size: 1.6rem;
       padding: 1rem;
       border-radius: 3px;
+      transition:200ms ease-out;
+      transform: scale(1);
+    }
+
+    .online-players.hidden {
+      transform: scale(0);
+    }
+
+    .online-players.night {
+      background-color: #c0392b;
     }
 
     .score-board {
@@ -143,17 +155,22 @@
 
     #day-bar {
       position: absolute;
-      top: 0;
+      top: 15px;
       left: 50%;
       width: 150px;
       margin-left: -75px;
       background: rgba(44, 62, 80, 0.9);
-      border-bottom-left-radius: 6px;
-      border-bottom-right-radius: 6px;
+      border-radius: 6px;
       padding: 5px 15px;
       display: flex;
       align-items: center;
       justify-content: flex-start;
+      transform: scale(1);     
+      transition: 200ms ease-out;
+    }
+
+    #day-bar.hidden {
+      transform: scale(0);
     }
 
     #day-bar img {
@@ -201,11 +218,11 @@
 <body>
   <div id="game-container" class="game-container">
     <div id="day-background"></div>
-    <div id="day-bar" class="morning">
-      <img class="morning" src="./src/assets/images/morning.png" alt="">
-      <img class="night" src="./src/assets/images/night.png" alt="">
-      <span></span>
-    </div>
+  </div>
+  <div id="day-bar" class="morning hidden">
+    <img class="morning" src="./src/assets/images/morning.png" alt="">
+    <img class="night" src="./src/assets/images/night.png" alt="">
+    <span></span>
   </div>
   <div id="chat-app">
     <h6>Write Something..</h6>

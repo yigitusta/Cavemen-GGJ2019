@@ -86,6 +86,7 @@ export default class LoginScene extends Phaser.Scene {
       if (data.status === true) {
         const { player, players } = data;
         this.scene.start(CST.SCENES.MAIN, { players, player });
+        document.querySelector('#day-bar').classList.remove('hidden');
       }
     });
 

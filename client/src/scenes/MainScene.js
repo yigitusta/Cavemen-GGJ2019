@@ -67,6 +67,7 @@ export default class MainScene extends Phaser.Scene {
       if (data.period == 'night') {
         document.querySelector('#day-background').className = '';
         document.querySelector('#day-background').classList.add('active');
+        document.querySelector('.online-players').classList.add('night');
 
         const res = this.isInsideCave();
 
@@ -78,6 +79,7 @@ export default class MainScene extends Phaser.Scene {
 
       } else {
         document.querySelector('#day-background').className = '';
+        document.querySelector('.online-players').classList.remove('night');
       }
 
       dayBar.querySelector('span').innerText = data.number;
