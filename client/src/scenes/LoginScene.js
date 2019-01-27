@@ -47,10 +47,31 @@ export default class LoginScene extends Phaser.Scene {
       }
     );
 
-    text.setInteractive();
+    const howtoPlay = this.add.text(
+      camera.centerX - 460,
+      camera.centerY / 2 + 500,
+      '<-- How To Play -->', {
+        font: '32px Courier',
+        fill: '#4a4a4a',
+        padding: {
+          x: 295,
+          y: 10
+        }
+      }
+    );
 
+    howtoPlay.setInteractive();
+    howtoPlay.on('pointerdown', () => {
+      const modal = document.querySelector('#howToPlay');
+      modal.classList.add('active');
+      modal.querySelector('.close').addEventListener('click', function() {
+        modal.classList.remove('active');
+      });
+    });
+
+    text.setInteractive();
     const start = new Promise((resolve, reject) => {
-      this.input.on('gameobjectdown', (event) => {
+      text.on('pointerdown', (event) => {
         resolve(textEntry.text);
       });
 
