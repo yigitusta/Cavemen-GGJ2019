@@ -44,17 +44,8 @@ export default class MainScene extends Phaser.Scene {
     this.notifyServer();
   }
   handleNewmeat() {
-    window.socket.on('new-meat', data => {
-      const meatCount = data.food;
-      for (let i = 0; i < meatCount; i++) {
-        let dx = (Math.random() * 10);
-        dx *= Math.floor(Math.random() * 2) === 1 ? 1 : -1;
-        let dy = (Math.random() * 10);
-        dy *= Math.floor(Math.random() * 2) === 1 ? 1 : -1;
-        const x = data.x + dx;
-        const y = data.y + dy;
-        this.createMeat({x, y});
-      }
+    window.socket.on('new-meat', newMeats => {
+      newMeats.forEach(({x, y}) => this.createMeat({x, y}));
     });
   }
   handleMessaging() {

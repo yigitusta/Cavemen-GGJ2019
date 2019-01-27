@@ -90,11 +90,19 @@ io.sockets.on('connection', (socket) => {
     const disconnectedPlayer = players.find((player) => socket.id === player.id);
     players = players.filter(p => p.id !== socket.id);
     if (disconnectedPlayer) {
-      socket.broadcast.emit('new-meat', {
-        x: disconnectedPlayer.x,
-        y: disconnectedPlayer.y,
-        food: disconnectedPlayer.food
-      });
+      const newMeats = [];
+      const meatCount = disconnectedPlayer.food;
+      for (let i = 0; i < meatCount; i++) {
+        let dx = (Math.random() * 10);
+        dx *= Math.floor(Math.random() * 2) === 1 ? 1 : -1;
+        let dy = (Math.random() * 10);
+        dy *= Math.floor(Math.random() * 2) === 1 ? 1 : -1;
+        const x = disconnectedPlayer.x + dx;
+        const y = disconnectedPlayer.y + dy;
+        newMeats.push({ x, y });
+      }
+      meats.push(...newMeats);
+      socket.broadcast.emit('new-meat', newMeats);
     }
   });
 
