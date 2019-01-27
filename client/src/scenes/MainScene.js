@@ -16,6 +16,7 @@ export default class MainScene extends Phaser.Scene {
     this.meatImages = [];
   }
   create() {
+    this.start_the_game_sound = this.sound.add("start_the_game_already");
     this.handleMessaging();
     this.createAnimations();
     this.createMap();
@@ -44,6 +45,9 @@ export default class MainScene extends Phaser.Scene {
     window.socket.on('message', data => {
       const p = this.players.find(e => e.id === data.id );
       p.addMessageBox(data.message);
+      if (data.message === "14") {
+        this.start_the_game_sound.play();
+      }
     });
   }
   createUI() {
@@ -374,6 +378,9 @@ export default class MainScene extends Phaser.Scene {
     if (window.conversationBoxOpened) {
       if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER) {
         this.player.addMessageBox(entry.value);
+        if (entry.value === "14") {
+          this.start_the_game_sound.play();
+        }
         window.socket.emit('message', {
           x: this.player.x,
           y: this.player.y,
