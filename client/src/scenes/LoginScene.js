@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import io from 'socket.io-client';
-import * as Graphics from "../utils/graphics";
+import * as Graphics from '../utils/graphics';
+import { drawChatbox } from '../components/Graphics';
 
 import PlayerShape from '../../../common/PlayerShape';
 import CST from '../CST';
@@ -13,6 +14,7 @@ export default class LoginScene extends Phaser.Scene {
 
   }
   create() {
+    drawChatbox(this);
     // this.sound.add("start_the_game_already").play();
     const camera = this.cameras.main;
 

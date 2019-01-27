@@ -10,3 +10,9 @@ export function drawGraphics({ x, y, width, height}, ctx) {
 	graphics.strokeRect(x, y, width, height);
 	return graphics;
 };
+
+export function drawChatbox(ctx) {
+	const graphics = new Phaser.GameObjects.Graphics(ctx);
+	graphics.lineStyle(20, 0x2ECC40);
+	graphics.strokeRect(50, 50, 100, 40);
+}

@@ -32,7 +32,7 @@ export default class MainScene extends Phaser.Scene {
     // this.input.on('pointerup', this.handleCombat.bind(this));
     this.input.keyboard.on('keyup', this.handleInput.bind(this));
     this.handleTopDayBar();
-  
+
     Scoreboard.startSorting();
   }
   update(time, delta) {
@@ -60,19 +60,19 @@ export default class MainScene extends Phaser.Scene {
       if (data.period == 'night') {
         document.querySelector('#day-background').className = '';
         document.querySelector('#day-background').classList.add('active');
-        
+
         const res = this.isInsideCave();
 
         if (res == false) {
           health = Math.floor(health - 1.6);
         }
-        
+
         socket.emit('healthExtract', {id, health});
 
       } else {
         document.querySelector('#day-background').className = '';
       }
-    
+
       dayBar.querySelector('span').innerText = data.number;
     });
   }
@@ -113,7 +113,7 @@ export default class MainScene extends Phaser.Scene {
     if (currentCaveIndex != null) {
       return cave[currentCaveIndex];
     }
-  
+
     return false;
   }
 
@@ -156,7 +156,6 @@ export default class MainScene extends Phaser.Scene {
     if (!!hitPlayer) {
       speechSynthesis.cancel();
       speechSynthesis.speak(new SpeechSynthesisUtterance("take that"));
-      console.log(this.player.facing);
       window.socket.emit('hit', {
         id: hitPlayer.id,
         damage: 10
@@ -166,7 +165,6 @@ export default class MainScene extends Phaser.Scene {
   notifyServer() {
     const socket = window.socket;
     const { x, y, id } = this.player;
-console.log("X: ", x, "Y: ", y);
     socket.emit('update', { x, y, id }, ({ health, food }) => {
       this.player.health = health;
       this.player.food = food;
@@ -358,12 +356,28 @@ console.log("X: ", x, "Y: ", y);
     if (event.keyCode == 9) {
       return;
     }
-    
+
     let entry = window.chat.querySelector("input[type='text']");
     if (event.keyCode == 84) {
       if (!window.conversationBoxOpened) {
         this.handleConversationBox();
         window.conversationBoxOpened = true;
+        return;
+      }
+    }
+
+    if (window.conversationBoxOpened) {
+      if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER) {
+        console.log(entry.value);
+        window.chat.classList.add('remove');
+        window.chat.classList.remove('active');
+        entry.value = '';
+        window.conversationBoxOpened = false;
+      } else if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ESC) {
+        window.chat.classList.add('remove');
+        window.chat.classList.remove('active');
+        entry.value = '';
+        window.conversationBoxOpened = false;
       }
     }
 
