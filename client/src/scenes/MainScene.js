@@ -352,6 +352,10 @@ console.log("X: ", x, "Y: ", y);
     });
   }
   handleInput(event) {
+    if (event.keyCode == 9) {
+      return;
+    }
+    
     let entry = window.chat.querySelector("input[type='text']");
     if (event.key == 't') {
       if (!window.conversationBoxOpened) {

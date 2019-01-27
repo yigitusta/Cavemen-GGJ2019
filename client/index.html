@@ -42,10 +42,12 @@
       margin-left: -350px;
       transition: 300ms ease-out;
       transform: translateY(150px);
+      display: none;
     }
 
     #chat-app.active {
       transform: translateY(0px);
+      display: block;
     }
 
     #chat-app .close {
@@ -207,7 +209,7 @@
   </div>
   <div id="chat-app">
     <h6>Write Something..</h6>
-    <input type="text" />
+    <input type="text" readonly />
     <span class="close">X</span>
   </div>
   <div class="online-players hidden">
