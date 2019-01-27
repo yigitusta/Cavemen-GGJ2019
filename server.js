@@ -143,7 +143,7 @@ setInterval(() => {
 
 
 function meatCreate() {
-  for (let i=0; i < 50; i++) {
+  for (let i=0; i < 150; i++) {
     const x = Math.floor(Math.random() * 2000);
     const y = Math.floor(Math.random() * 2000);
 

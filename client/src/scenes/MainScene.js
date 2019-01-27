@@ -26,7 +26,6 @@ export default class MainScene extends Phaser.Scene {
     this.createPlayer();
     this.createPlayers();
     this.createCamera();
-    this.debugGraphics();
     this.cursors = this.input.keyboard.createCursorKeys();
     this.events.on('resize', utils.handleGameResize, this);
     this.events.on('heartbeat', this.handlePlayers, this);
@@ -296,6 +295,7 @@ export default class MainScene extends Phaser.Scene {
     world.setCollisionByProperty({ collides: true });
     above.setDepth(1);
     this.world = world;
+    this.above = above;
   }
 
   createPlayer() {
@@ -318,21 +318,6 @@ export default class MainScene extends Phaser.Scene {
     camera.startFollow(this.player);
     camera.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
     camera.setSize(this.sys.game.config.width, this.game.config.height);
-  }
-  debugGraphics() {
-    this.input.keyboard.once("keydown_U", event => {
-      this.physics.world.createDebugGraphic();
-
-      const graphics = this.add
-        .graphics()
-        .setAlpha(0.75)
-        .setDepth(20);
-      this.world.renderDebug(graphics, {
-        tileColor: null,
-        collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-        faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-      });
-    });
   }
   updatePlayer() {
     const dirs = this.WASD && this.WASD();
@@ -357,6 +342,9 @@ export default class MainScene extends Phaser.Scene {
     });
   }
   createMeat(meat) {
+    if (this.above.hasTileAtWorldXY(meat.x, meat.y) || this.world.hasTileAtWorldXY(meat.x, meat.y)) {
+      return;
+    }
     const player = this.player;
     const image = this.physics.add.image(meat.x, meat.y, 'meat');
     image.body.collideWorldBounds = false;

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>CaveMen</title>
+  <style>html {
+      font-size: 62.5%;
+    }
+
+    body {
+      font-family: 'Arial';
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 100vw;
+      max-width: 100%;
+      height: 100vh;
+      max-height: 100%;
+      overflow: hidden;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    #chat-app {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 700px;
+      height: 100px;
+      background: rgba(44, 62, 80, 0.9);
+      padding: 20px 25px;
+      margin-left: -350px;
+      transition: 200ms ease-out;
+      transform: translateY(150px) scale(0.5);
+    }
+
+    #chat-app input {
+      display: none;
+    }
+
+    #chat-app.active {
+      transform: translateY(0px) scale(1);
+    }
+
+    #chat-app.active input {
+      display: block;
+    }
+
+    #chat-app .close {
+      position: absolute;
+      right: 0;
+      top: 0;
+      transform: translate(40%, -40%);
+      background: #c0392b;
+      color: #fff;
+      border-radius: 50%;
+      display: block;
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    #chat-app h6 {
+      color: #fff;
+      font-weight: bold;
+      margin: 0;
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+
+    #chat-app input {
+      width: 100%;
+      height: 35px;
+      margin: 0 auto;
+      border-radius: 3px;
+      outline-color: #c0392b;
+      font-size: 15px;
+      padding: 0 10px;
+    }
+
+    .online-players > ul > li {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 14rem;
+      margin-bottom: 0.7rem;
+      margin-left: 0.7rem;
+      margin-right: 0.7rem;
+    }
+
+    .online-players {
+      position: fixed;
+      min-width: 16rem;
+      right: 3rem;
+      top: 15px;
+      background-color: rgba(44, 62, 80, 0.9);
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.6rem;
+      padding: 1rem;
+      border-radius: 3px;
+      transition:200ms ease-out;
+      transform: scale(1);
+    }
+
+    .online-players.hidden {
+      transform: scale(0);
+    }
+
+    .online-players.night {
+      background-color: #c0392b;
+    }
+
+    .online-players.night .score-board {
+      border-color: #fff;
+    }
+
+    .score-board {
+      margin: 0 auto;
+      margin-bottom: 1.3rem;
+      text-align: center;
+      border-bottom: 1px solid #999;
+      width: 80%;
+      padding-bottom: 0.5rem;
+    }
+
+    .online-players>li {
+      margin-top: 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    .score-meat-img {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .score-meat {
+      margin-left: 2rem;
+      margin-right: 0.5rem;
+    }
+
+    .score-name {
+      width: 500px;
+    }
+
+    #day-bar {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      width: 150px;
+      margin-left: -75px;
+      background: rgba(44, 62, 80, 0.9);
+      border-radius: 6px;
+      padding: 5px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      transform: scale(1);     
+      transition: 200ms ease-out;
+    }
+
+    #day-bar.hidden {
+      transform: scale(0);
+    }
+
+    #day-bar img {
+      display: none;
+      width: 40px;
+      margin-right: 20px;
+    }
+
+    #day-bar.morning .morning {
+      display: block;
+    }
+
+    #day-bar.night {
+      background-color: #c0392b;
+    }
+
+    #day-bar.night .night {
+      display: block;
+    }
+
+    #day-bar span {
+      color: #fff;
+      font-weight: bold;
+      font-size:22px;
+    }
+
+    #day-background {
+      background-color: rgba(44, 62, 80, 0.4);
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      left:0;
+      top:0;
+      opacity: 0;
+      transition: 500ms ease-out;
+      pointer-events: none;
+    }
+
+    #day-background.active {
+      opacity: 1;
+    }
+
+
+    #howToPlay {
+      position: absolute;
+      left:0;
+      top:0;
+      width: 100%;
+      height: 100%;
+      visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #howToPlay.active {
+      visibility: visible;
+    }
+
+    #howToPlay.active .background {
+      opacity: 1;
+    }
+
+    #howToPlay.active .close {
+      background: #c0392b;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      right: 0;
+      top:0;
+      transform: translate(40%, -40%);
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    
+    #howToPlay.active .content {
+      transform: scale(1);
+    }
+
+    #howToPlay .background {
+      background:rgba(44, 62, 80, 0.6);
+      transition: 200ms ease-out;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      opacity: 0;
+    }
+
+    #howToPlay .content {
+      background: #fff;
+      padding: 20px 25px;
+      width: 600px;
+      flex: 0 0 600px;
+      max-width: 95%;
+      transition: 200ms ease-out;
+      transform: scale(0);
+      border-radius: 6px;
+      box-shadow:rgba(44, 62, 80, 0.8);
+      position: relative;
+    }
+
+    #howToPlay .content .content-group {
+      margin: 25px 0;
+    }
+
+    #howToPlay .content .content-group h1,
+    #howToPlay .content .content-group h4 {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    #howToPlay .content p {
+      font-size: 14px;
+      margin: 8px 0;
+    }
+
+    #howToPlay .content mark {
+      background: none;
+      color: #c0392b;
+      font-weight: bold;
+    }
+
+    #howToPlay .content img {
+      max-width: 100%;
+    }</style>
+</head>
+
+<body>
+  <div id="game-container" class="game-container">
+    <div id="day-background"></div>
+  </div>
+  <div id="day-bar" class="morning hidden">
+    <img class="morning" src="/morning.1f53ef1f.png" alt="">
+    <img class="night" src="/night.64670526.png" alt="">
+    <span></span>
+  </div>
+  <div id="chat-app">
+    <h6>Write Something..</h6>
+    <input type="text" readonly="">
+    <span class="close">X</span>
+  </div>
+  <div class="online-players hidden">
+    <p class="score-board">Scoreboard</p>
+    <ul>
+    </ul>
+  </div>
+
+  <div id="howToPlay">
+    <div class="container">
+      <div class="background"></div>
+      <div class="content">
+        <span class="close">X</span>
+
+        <div class="content-group">
+          <h1>What is the main purpose?</h1>
+          <p>
+            Your main goal is being to survive. We give you a 120 second to save your life. You have to find a cave. 
+            If you can't find the cave in 120 second, you can die in night. The night will be 60 seconds.
+          </p>
+        </div>
+
+        <div class="content-group">
+          <h4>You can talk other players</h4>
+          <p>The best new is that <b>Caveman</b> is multiplayer game. You can talk with other players. </p>
+          <p>Only press <mark>T</mark>. After that, you can see a input area in bottom of page. </p>
+          <img src="/conversation.e1a19388.png">
+          <p>Before forgetting, you can shout by saying 9 or 14.</p>
+        </div>
+
+        <div class="content-group">
+          <h4>How to attack another person?</h4>
+          <p>You can attack to other players by pressing <mark>Space</mark>.</p>
+        </div>
+
+        <div class="content-group">
+          <h4>How can you heal?</h4>
+          <p>You can being more healthy for eating Food. You can eat by pressing <mark>H</mark>.</p>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  <script src="/src.a2b27638.js"></script>
+  <script>document.querySelector('#chat-app .close').addEventListener('click', function (e) {
+  e.target.closest('#chat-app').classList.remove('active');
+  document.querySelector('#chat-app input[type="text"]').value = '';
+  window.conversationBoxOpened = false;
+});</script>
+</body>
+
+</html>
