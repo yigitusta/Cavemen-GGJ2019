@@ -6,13 +6,13 @@ Cavemen is a game about pre-historic ice age period. It is a multiplayer surviva
 
 Note: It might take a while to load for the first time if there hasn't been any players online recently.
 
-# Controls
+## Controls
   - 'WASD' to move.
   - 'Space' to hit other players, you must be next to them and facing them to hit them.
   - 'T' to open chat box talk to other players. You can even taunt them by typing '14' or '9'. (I hope Microsoft won't make a copyright claim for the taunts.)
   - 'H' to fill health by consuming food collected.
 
-# Tech
+## Tech
 
 Frameworks, tools, libraries, technologies used listed below:
 
@@ -24,13 +24,13 @@ Frameworks, tools, libraries, technologies used listed below:
 * [Express][express-link] - Fast node.js network app framework
 * [Web Speech API: Speech Synthesis][speech-link] - Converting strings to speech
 
-# Related Tutorials
+## Related Tutorials
 
 Tutorials we followed/inspired by:
 * [Agario Clone][agario-clone-link] - Agar.io tutorial by The Coding Train from Youtube.
 * [Modular Game Worlds in Phaser 3 (Tilemaps #1) — Static Maps][static-maps-link] - A series of blog posts from Michael Hadley explaining usage of tile maps with phaser 3. I highly suggest you to go through all of these blog posts if you are into HTML5 game development. Topics like advanced physics and dynamic tile maps are covered in these blog posts.
 
-# Installation - Development
+## Installation - Development
 
 **Installing the dependencies for the game server and starting it:**
 
@@ -60,14 +60,14 @@ $ npm start
 
 **Note:** Since we developed this game in two days, we didn't very thoroughly consider aspects like software maintainability, scalability and security. So, we suggest you to make improvements upon the structure if you want to use the code on a game project.
 
-# About Our Jam
-## Theme
+## About Our Jam
+### Theme
 
 [Global Game Jam's 2019 theme: 'What Home Means To You?'][ggj-2019-theme]
 
 Our game adheres to the theme by requiring players to find and enter a cave during night time, otherwise they lose their health meanwhile due to the cold. For us, "Home" means a place keeping us warm for the night.
 
-## Diversifiers
+### Diversifiers
 
 [About GGJ's 2019 Diversifiers][ggj-2019-diversifiers]
 
@@ -75,13 +75,13 @@ Our game adheres to the theme by requiring players to find and enter a cave duri
 - Use the Source, Luke (Sponsored by GitHub) - Use one or more open source tools, game engines or libraries in your game (and thank them in in the Technology Notes section on the submission page).
 - This is where we came in, right? - Make a looping game and have the player start at a random point in the storyline.
 
-## Jam Site
+### Jam Site
 Special thanks to [IGDA Hacettepe][igda-hacettepe] for organizing and hosting the jam site [Hacettepe Üniversitesi Teknokent][jam-site].
 
-## Jam Song
+### Jam Song
 Our jam song is [Daft Punk - Giorgio by Moroder][jam-song]
 
-## Team
+### Team
 - [Arda Zaman][arda-zaman] - Software Developer
 - [Demircan Yiğit Öney][demircan-oney] - Game Artist
 - [Yiğit Usta][yigit-usta] - Software Developer
