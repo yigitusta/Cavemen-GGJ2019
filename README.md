@@ -86,8 +86,8 @@ Our jam song is [Daft Punk - Giorgio by Moroder][jam-song]
 - [Demircan Yiğit Öney][demircan-oney] - Game Artist
 - [Yiğit Usta][yigit-usta] - Software Developer
 
-### License: [ Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)][license-link]
-### [Info about GGJ Legal & Policies][ggj-legal-link]
+#### License: [ Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)][license-link]
+#### [Info about GGJ Legal & Policies][ggj-legal-link]
 
    [ggj-2019-theme]: <https://www.youtube.com/watch?v=pUohwjq9RkA>
    [ggj-2019-diversifiers]: <https://globalgamejam.org/news/ggj19-diversifiers>
