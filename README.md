@@ -1,5 +1,7 @@
 # Cavemen
 
+![Game Screenshot](https://github.com/yigitusta9/Cavemen-GGJ2019/blob/master/README.jpg)
+
 Cavemen is a game about pre-historic ice age period. It is a multiplayer survival game where players have to find shelter for their survival and food to restore their health. Players can attack each other and take the food dropped from dead (or disconnected) players. During the night time if the players are not in a cave they will lose their health gradually.
 
 [Play Now!][play-link]
