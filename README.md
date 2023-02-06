@@ -93,7 +93,7 @@ Our jam song is [Daft Punk - Giorgio by Moroder][jam-song]
 
    [ggj-2019-theme]: <https://www.youtube.com/watch?v=pUohwjq9RkA>
    [ggj-2019-diversifiers]: <https://globalgamejam.org/news/ggj19-diversifiers>
-   [play-link]: <http://cavemenn.herokuapp.com>
+   [play-link]: <https://cavemen.usta.dev/>
    [phaser-link]: <https://phaser.io>
    [parcel-link]: <https://parceljs.org>
    [socketio-link]: <https://socket.io>
